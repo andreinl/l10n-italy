@@ -1,25 +1,22 @@
 # -*- coding: utf-8 -*-
-# Copyright 2016 Antonio M. Vigliotti <antoniomaria.vigliotti@gmail.com>
+# Copyright 2016-18 Antonio M. Vigliotti <antoniomaria.vigliotti@gmail.com>
 # License AGPL-30 or later (http://www.gnu.org/licenses/agpl).
 {
     'name': 'multibase_plus',
-
-    'summary': '''Enhanced Odoo Features''',
-
+    'summary': 'Enhanced Odoo Features',
+    'version': '8.0.0.1.2',
+    'category': 'Base',
     'author': 'SHS-AV s.r.l.',
     'website': 'https://www.zeroincombenze.it/',
-
-    'category': 'Base',
     'license': 'AGPL-3',
-    'version': '8.0.0.1.1',
-
-    'depends': ['base',
-                'sale'],
-
+    'depends': [
+        'base',
+        'sale',
+        'purchase',
+    ],
     'data': [
-        # 'views/sale_order_view.xml',
         'views/account_invoice_view.xml',
         'views/purchase_order_view.xml'
     ],
-    'installable': True
+    'installable': True,
 }

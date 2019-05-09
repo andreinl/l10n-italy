@@ -13,6 +13,9 @@
 * Mauro Soligo <mauro.soligo@katodo.com>
 * Lorenzo Battistini <lorenzo.battistini@agilebg.com>
 * Roberto Onnis <roberto.onnis@innoviu.com>
+* Luca Subiaco <subluca@gmail.com>
+* Giovanni Barzan <giovanni.barzan@gmail.com>
+* Franco Tampieri <franco.tampieri@abstract.it>
 * Antonio M. Vigliotti <info@shs-av.com>
 .. $elif branch in '9.0'
 * Davide Corio <davide.corio@abstract.it>

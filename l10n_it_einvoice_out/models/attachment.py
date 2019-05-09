@@ -11,7 +11,7 @@ from openerp import fields, models, api
 
 class FatturaPAAttachment(models.Model):
     _name = "fatturapa.attachment.out"
-    _description = "FatturaPA Export File"
+    _description = "E-invoice Export File"
     _inherits = {'ir.attachment': 'ir_attachment_id'}
     _inherit = ['mail.thread']
 

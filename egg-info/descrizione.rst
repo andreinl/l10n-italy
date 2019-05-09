@@ -12,14 +12,14 @@ Sono coperte le aree:
 * Comunicazione IVA Elettronica (ex Spesometro)
 .. $fi
 * Registrazione fatture fornitori con RA
-.. $if branch in '7.0' '8.0'
+.. $if branch in '7.0'
 * Registrazione proposte di parcella da professionisti
 .. $fi
 .. $if branch in '8.0'
 * Emissione parcelle attive
 .. $fi
 * FatturaPA
-* Fattura Elettronica B2B (in fase di sviluppo)
+* Fattura Elettronica B2B
 * Gestione DdT
 * Data di registrazione fatture fornitori
 * Gestione Ricevute Bancarie

@@ -28,15 +28,86 @@ as per send to the SdI (Exchange System by Italian Tax Authority)
 -------------------------------
 
 Questo modulo gestisce l'infrastruttura per generare il file xml della Fattura 
-Elettronica e della FatturaPA, versione 1.2, da trasmettere al sistema di interscambio SdI.
+Elettronica e della FatturaPA, versione 1.2.1, da trasmettere al sistema di interscambio SdI.
 
-In anagrafica clienti è disponibile una nuova linguetta ove inserire i dati per la fattura elettronica.
+In anagrafica clienti i dati per la fattura elettronica sono inseribili nella scheda "Agenzia delle Entrate".
+Le casistiche previste sono:
+
+::
+
+    Fattura elettronica a soggetto IVA
+
+Si tratta della casistica più comune. Selezionare "Soggetto a fattura elettronica"
+e compilare il "Codice destinatario" o la "PEC".
+La partita IVA è un dato obligatorio ai fini dell'invio.
+L'eventuale invio di una fattura in formato PDF è una fattura di cortesia e non
+ha valore legale.
+
+::
+
+    Fattura elettronica a PA
+
+Questa casistica è attiva già dal 2016. Impostare "Pubblica Amministrazione"
+e compilare il "Codice ufficio".
+
+::
+
+    Fattura elettronica a privato senza partita IVA
+
+La legge non prevede l'obbligo di emissione della fattura elettronica ma è
+ammessa l'emissione a condizione che venga inviata una fattura in formato PDF
+al cliente. Inserire il valore "0000000" nel codice destinatario
+e il codice fiscale.
+
+::
+
+    Fattura elettronica a soggetto IVA senza Codice Destinatario ne PEC
+
+Casistica in cui un cliente con partita IVA non ha fornito
+ne il proprio Codice Destinatario ne la propria PEC. Si riconduce al caso
+precedente, inserendo il valore "0000000" nel codice destinatario ed il
+codice fiscale. Anche in questo caso è obbligatorio inviare una fattura in
+formato PDF al cliente.
+
+::
+
+    Fattura elettronica a rappresentante fiscale in Italia
+
+Casistica di aziende estere con rappresentanza fiscale in Italia.
+Inserire nei contatti un indirizzo di fatturazione di tipo "Rappresentante fiscale"
+con la partita IVA italiana ed i dati per la fatturazione elettronica.
+La fattura va emessa al rappresentante fiscale.
+
+::
+
+    Fattura elettronica a stabile organizzazione
+
+Casistica di aziende estere con stabile organizzazione in Italia.
+Inserire nei contatti un indirizzo di fatturazione di tipo "Stabile organizzazione"
+con la partita IVA italiana ed i dati per la fatturazione elettronica.
+La fattura va emessa alla stabile organizzazione.
+
+::
+
+    Fattura elettronica a soggetto estero
+
+Inserire il valore XXXXXXX nel codice destinatario. Il file XML viene generato
+con le opportune correzione per la validazioni dell'Agenzia delle Entrate.
+Anche in questo caso è obbligatorio inviare una fattura in
+formato PDF al cliente.
+
+::
+
+Configurare le imposte riguardo a "Natura non imponibile",
+"Riferimento legislativo" ed "Esigibilità IVA"
+
+Configurare i dati della fattura elettronica nella configurazione della contabilità, dove necessario
 
 ::
 
     Destinatari:
 
-Il modulo è destinato a tutte le aziende che dal 2019 dovarnno emettere fattura elettronica
+Il modulo è destinato a tutte le aziende che dal 2019 dovranno emettere fattura elettronica
 
 
 ::
@@ -44,6 +115,7 @@ Il modulo è destinato a tutte le aziende che dal 2019 dovarnno emettere fattura
     Normativa:
 
 Le leggi inerenti la fattura elettronica sono numerose. Potete consultare la `normativa fattura elettronica <https://www.fatturapa.gov.it/export/fatturazione/it/normativa/norme.htm>`__
+
 
 |
 |
@@ -54,11 +126,10 @@ Certifications / Certificazioni
 +----------------------+------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
 | Logo                 | Ente/Certificato                                                                                     | Data inizio   | Da fine      | Note                                         |
 +----------------------+------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-| |xml\_schema|        | `ISO + Agenzia delle Entrate <https://www.fatturapa.gov.it/export/fatturazione/it/strumenti.htm>`__  | 01-06-2017    | 31-12-2018   | Validazione contro schema xml                |
+| |xml\_schema|        | `ISO + Agenzia delle Entrate <https://www.fatturapa.gov.it/export/fatturazione/it/strumenti.htm>`__  | 01-06-2017    | 31-12-2019   | Validazione contro schema xml                |
 +----------------------+------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-| |FatturaPA|          | `FatturaPA <https://www.fatturapa.gov.it/export/fatturazione/it/index.htm>`__                        | 01-06-2017    | 31-12-2018   | Controllo tramite sito Agenzia delle Entrate |
+| |FatturaPA|          | `FatturaPA <https://www.fatturapa.gov.it/export/fatturazione/it/index.htm>`__                        | 01-06-2017    | 31-12-2019   | Controllo tramite sito Agenzia delle Entrate |
 +----------------------+------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-
 
 |
 
@@ -68,11 +139,8 @@ OCA comparation / Confronto con OCA
 +-----------------------------------------------------------------+-------------------+-----------------------+--------------------------------+
 | Description / Descrizione                                       | Odoo Italia       | OCA                   | Notes / Note                   |
 +-----------------------------------------------------------------+-------------------+-----------------------+--------------------------------+
-| Coverage / Copertura test                                       |  |Codecov Status| | |OCA Codecov Status|  |                                |
+| Coverage / Copertura test                                       |  |Codecov Status| | |OCA Codecov Status|  | |OCA project|                  |
 +-----------------------------------------------------------------+-------------------+-----------------------+--------------------------------+
-
-
-|OCA project|
 
 |
 |
@@ -87,7 +155,7 @@ Prerequisites / Prerequisiti
 ----------------------------
 
 
-* python
+* python2.7+
 * postgresql 9.2+
 
 |
@@ -159,7 +227,7 @@ Support / Supporto
 ------------------
 
 
-|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__ and free support is supplied through `Odoo Italia Associazione Forum <https://odoo-italia.org/index.php/kunena/recente>`__
+|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__
 
 
 |
@@ -179,14 +247,14 @@ In case of trouble, please check there if your issue has already been reported.
 Known issues / Roadmap
 ----------------------
 
-|en| Please, do not mix the following OCA Italy and OIA module.
+|en| Please, do not mix the following module with OCA Italy modules.
 
 This module may be conflict with some OCA modules with error:
 
 |exclamation| name CryptoBinary used for multiple values in typeBinding
 
 
-|it| Si consiglia di non mescolare moduli OCA Italia e moduli OIA.
+|it| Si consiglia di non mescolare i seguenti moduli con i moduli di OCA Italia.
 
 Lo schema di definizione xml, pubblicato con
 urn:www.agenziaentrate.gov.it:specificheTecniche è base per tutti i file
@@ -245,6 +313,12 @@ Contributors / Collaboratori
 * Lorenzo Battistini <lorenzo.battistini@agilebg.com>
 * Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com>
 
+Translations by / Traduzioni a cura di
+--------------------------------------
+
+* Sergio Zanchetta <https://github.com/primes2h>
+* Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com>
+
 |
 
 ----------------
@@ -265,7 +339,7 @@ La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato ita
 
 |
 
-Last Update / Ultimo aggiornamento: 2018-11-22
+Last Update / Ultimo aggiornamento: 2019-03-20
 
 .. |Maturity| image:: https://img.shields.io/badge/maturity-Alfa-red.png
     :target: https://odoo-community.org/page/development-status

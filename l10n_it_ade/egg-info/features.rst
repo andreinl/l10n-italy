@@ -4,11 +4,9 @@ Features / Funzioni
 +------------------------------------------------------+----------+----------------------------------------------+
 | Feature / Funzione                                   |  Status  | Notes / Note                                 |
 +------------------------------------------------------+----------+----------------------------------------------+
-| Generate / Emissione FatturaPA                       | |check|  | Genera file .xml versione 1.2                |
+| Fiscal Invoice Type / Tipo fattura fiscale           | |check|  | Codifica tipo di fattura come da AdE         |
 +------------------------------------------------------+----------+----------------------------------------------+
-| Generate / Emissione Fattura B2B                     | |check|  | Genera file .xml versione 1.2                |
+| Codice Carica                                        | |check|  | Codifica codice carica come da AdE           |
 +------------------------------------------------------+----------+----------------------------------------------+
-| Company info form invoice / Dati azienda da fattura  | |check|  | Versione OCA utilizza dati azienda da utente |
-+------------------------------------------------------+----------+----------------------------------------------+
-| Validation suring editing / Controlli in tempo reale | |check|  |                                              |
+| Tax Nature / Natura fiscale dell'IVA                 | |check|  | Codifica natura fiscale dell'IVA come da AdE |
 +------------------------------------------------------+----------+----------------------------------------------+

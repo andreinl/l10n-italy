@@ -14,30 +14,26 @@
 Overview / Panoramica
 =====================
 
-|en| This module check for invoices to avoid wrong date sequence.
+|en| This module check for sequential invoice date because Italian law.
+
+Like OCA module, out_invoice dates are checked.
+
+Also in_invoice registration date are checked (this function is not [yet]
+implemented in OCA module).
 
 |
 
-|it| Il modulo controlla che la data fattura clienti o la data di registrazione
-della fattura fornitore sia sequenziale e conforme alla normativa italiana.
+|it| Questo modulo controlla la sequenza delle date della fattura per onorare la
+legge fiscale italiana.
 
-Il modulo controlla la data fattura cliente o la data di registrazione della
-fattura fornitore per il sezionale e l'anno fiscale.
-Durante l'accavallamento degli esercizi è possibile registrare sia fatture
-nell'anno corrente che nell'esercizio precedente.
+Come il modulo OCA è controllata la sequenza delle date della fatture di
+vendita.
+Inoltre è verificata la sequenza della date di registrazione delle fatture
+di acquisto (queste funzione non è [ancora] implementata nel modulo OCA).
 
-::
-
-    Destinatari:
-
-Tutte le aziende che emettono fatture in Italia.
-
-::
-
-    Normativa:
-
-La normativa di legge è il `DPR 633 art. 23 <http://def.finanze.it/DocTribFrontend/getAttoNormativoDetail.do?ACTION=getArticolo&id={75A4827C-3766-4ECC-9C45-00C8D6CDC552}&codiceOrdinamento=200002300000000&articolo=Articolo%2023>`__
-
+Il controllo è effettuato sull'anno fiscale e permette la registrazione
+contestuale di fatture su 2 anni fiscali diversi durante il periodo di
+accavallamento degli esercizi.
 
 |
 
@@ -66,7 +62,7 @@ Prerequisites / Prerequisiti
 ----------------------------
 
 
-* python
+* python2.7+
 * postgresql 9.2+
 
 |
@@ -138,7 +134,7 @@ Support / Supporto
 ------------------
 
 
-|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__ and free support is supplied through `Odoo Italia Associazione Forum <https://odoo-italia.org/index.php/kunena/recente>`__
+|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__
 
 
 |
@@ -180,12 +176,19 @@ Odoo is a trademark of `Odoo S.A. <https://www.odoo.com/>`__ (formerly OpenERP)
 Authors / Autori
 ----------------
 
-* `Apulia Software srl <info@apuliasoftware.it>`__
-* `SHS-AV s.r.l. <https://www.zeroincombenze.it>`__
+* Odoo Community
 
 Contributors / Collaboratori
 ----------------------------
 
+* Davide Corio <davide.corio@domsense.com>
+* Luca Subiaco <subluca@gmail.com>
+* Simone Orsi <simone.orsi@domsense.com>
+* Mario Riva <mario.riva@domsense.com>
+* Mauro Soligo <mauro.soligo@katodo.com>
+* Giovanni Barzan <giovanni.barzan@gmail.com>
+* Lorenzo Battistini <lorenzo.battistini@albatos.com>
+* Roberto Onnis <onnis.roberto@gmail.com>
 * Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com>
 
 |
@@ -208,7 +211,7 @@ La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato ita
 
 |
 
-Last Update / Ultimo aggiornamento: 2018-11-20
+Last Update / Ultimo aggiornamento: 2019-03-20
 
 .. |Maturity| image:: https://img.shields.io/badge/maturity-Alfa-red.png
     :target: https://odoo-community.org/page/development-status
@@ -226,9 +229,9 @@ Last Update / Ultimo aggiornamento: 2018-11-20
     :target: https://coveralls.io/github/zeroincombenze/l10n-italy?branch=8.0
     :alt: Coverage
 .. |Codecov Status| image:: https://codecov.io/gh/zeroincombenze/l10n-italy/branch/8.0/graph/badge.svg
-    :target: https://codecov.io/gh/zeroincombenze/l10n-italy/branch/8.0
+    :target: https://codecov.io/gh/OCA/l10n-italy/branch/8.0
     :alt: Codecov
-.. |OCA project| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-oca-8.svg
+.. |OCA project| image:: Unknown badge-OCA
     :target: https://github.com/OCA/l10n-italy/tree/8.0
     :alt: OCA
 .. |Tech Doc| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-docs-8.svg
@@ -240,8 +243,8 @@ Last Update / Ultimo aggiornamento: 2018-11-20
 .. |Try Me| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-try-it-8.svg
     :target: https://erp8.zeroincombenze.it
     :alt: Try Me
-.. |OCA Codecov Status| image:: Unknown badge-oca-codecov
-    :target: Unknown oca-codecov-URL
+.. |OCA Codecov Status| image:: https://codecov.io/gh/OCA/l10n-italy/branch/8.0/graph/badge.svg
+    :target: https://codecov.io/gh/OCA/l10n-italy/branch/8.0
     :alt: Codecov
 .. |Odoo Italia Associazione| image:: https://www.odoo-italia.org/images/Immagini/Odoo%20Italia%20-%20126x56.png
    :target: https://odoo-italia.org
@@ -264,10 +267,10 @@ Last Update / Ultimo aggiornamento: 2018-11-20
 .. |halt| image:: https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/halt.png
 .. |info| image:: https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/info.png
 .. |xml_schema| image:: https://raw.githubusercontent.com/zeroincombenze/grymb/master/certificates/iso/icons/xml-schema.png
-   :target: https://raw.githubusercontent.com/zeroincombenze/grymbcertificates/iso/scope/xml-schema.md
+   :target: https://github.com/zeroincombenze/grymb/blob/master/certificates/iso/scope/xml-schema.md
 .. |DesktopTelematico| image:: https://raw.githubusercontent.com/zeroincombenze/grymb/master/certificates/ade/icons/DesktopTelematico.png
-   :target: https://raw.githubusercontent.com/zeroincombenze/grymbcertificates/ade/scope/DesktopTelematico.md
+   :target: https://github.com/zeroincombenze/grymb/blob/master/certificates/ade/scope/Desktoptelematico.md
 .. |FatturaPA| image:: https://raw.githubusercontent.com/zeroincombenze/grymb/master/certificates/ade/icons/fatturapa.png
-   :target: https://raw.githubusercontent.com/zeroincombenze/grymbcertificates/ade/scope/fatturapa.md
+   :target: https://github.com/zeroincombenze/grymb/blob/master/certificates/ade/scope/fatturapa.md
 .. |chat_with_us| image:: https://www.shs-av.com/wp-content/chat_with_us.gif
    :target: https://tawk.to/85d4f6e06e68dd4e358797643fe5ee67540e408b

@@ -22,23 +22,24 @@ Overview / Panoramica
 
 |it| Questo modulo aggiunge varie caratteristiche utili che rendono l'interfaccia dell'installazione indipendente dalla versione di Odoo.
 
-
 |
 
 Features / Caratteristiche
 --------------------------
 
-+-------------------------------------+------------+------------+------------+------------+---------+------------+--------+
-| Features                            | 6.1        | 7.0        | 8.0        | 9.0        | 10.0    | 11.0       | 12.0   |
-+-------------------------------------+------------+------------+------------+------------+---------+------------+--------+
-| Customer ref in Sale Order tree     | |no_check| | |no_check| | |no_check| | |no_check| | |check| | |no_check| | |info| |
-+-------------------------------------+------------+------------+------------+------------+---------+------------+--------+
-| Supplier ref in Purchase Order tree | |no_check| | |no_check| | |check|    | |no_check| | |check| | |no_check| | |info| |
-+-------------------------------------+------------+------------+------------+------------+---------+------------+--------+
-| Refund (credit note) invoice menu   | |same|     | |same|     | |same|     | |same|     | |check| | |same|     | |info| |
-+-------------------------------------+------------+------------+------------+------------+---------+------------+--------+
-| Invoice group by company            | |no_check| | |no_check| | |no_check| | |check|    | |check| | |no_check| | |info| |
-+-------------------------------------+------------+------------+------------+------------+---------+------------+--------+
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
+| Feature / Caratteristica                                             | 6.1        | 7.0        | 8.0        | 9.0        | 10.0    | 11.0       | 12.0   |
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
+| Customer ref in Sale Order tree / Rif. Cliente in lista ordini       | |no_check| | |check|    | |no_check| | |no_check| | |check| | |no_check| | |info| |
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
+| Subtotal in Sale Order tree / Imponibile in lista ordini             | |no_check| | |check|    | |no_check| | |no_check| | |check| | |no_check| | |info| |
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
+| Supplier ref in Purchase Order tree / Rif. Fornitore in lista ordini | |no_check| | |no_check| | |check|    | |no_check| | |check| | |no_check| | |info| |
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
+| Refund (credit note) invoice menu / Menù Note Credito               | |same|     | |same|     | |same|     | |same|     | |check| | |same|     | |info| |
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
+| Invoice group by company / Raggruppamento fatture per azienda        | |no_check| | |no_check| | |no_check| | |check|    | |check| | |no_check| | |info| |
++----------------------------------------------------------------------+------------+------------+------------+------------+---------+------------+--------+
 
 
 |
@@ -65,7 +66,7 @@ Prerequisites / Prerequisiti
 ----------------------------
 
 
-* python
+* python2.7+
 * postgresql 9.2+
 
 |
@@ -137,7 +138,7 @@ Support / Supporto
 ------------------
 
 
-|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__ and free support is supplied through `Odoo Italia Associazione Forum <https://odoo-italia.org/index.php/kunena/recente>`__
+|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__
 
 
 |
@@ -206,7 +207,7 @@ La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato ita
 
 |
 
-Last Update / Ultimo aggiornamento: 2018-12-03
+Last Update / Ultimo aggiornamento: 2019-03-20
 
 .. |Maturity| image:: https://img.shields.io/badge/maturity-Alfa-red.png
     :target: https://odoo-community.org/page/development-status

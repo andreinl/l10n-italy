@@ -18,6 +18,7 @@ class AccountInvoice(models.Model):
         readonly=True)
 
     @api.one
-    def copy(self, defaults):
+    def copy(self, defaults=None):
+        defaults = defaults or {}
         defaults['fatturapa_attachment_out_id'] = None
         return super(AccountInvoice, self).copy(defaults)

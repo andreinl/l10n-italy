@@ -7,19 +7,22 @@
 # Alex Comba <alex.comba@agilebg.com>, 2015
 # Lorenzo Battistini <lorenzo.battistini@agilebg.com>, 2015
 # Massimiliano Casa <mcasa@cantiericasa.com>, 2015
+# Paolo Valier, 2016
+# Paolo Valier, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: l10n-italy (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-29 09:52+0000\n"
-"PO-Revision-Date: 2018-09-24 17:06+0200\n"
-"Last-Translator: Antonio M. Vigliotti <antoniomaria.vigliotti@gmail>\n"
-"Language-Team: Italian (http://www.transifex.com/oca/OCA-l10n-"
-"italy-8-0/language/it/)\n"
+"PO-Revision-Date: 2016-04-29 19:56+0000\n"
+"Last-Translator: Paolo Valier\n"
+"Language-Team: Italian (http://www.transifex.com/oca/OCA-l10n-italy-8-0/"
+"language/it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_it_base
 #: view:l10n_it.config.settings:l10n_it_base.view_l10n_it_config_settings
@@ -49,36 +52,26 @@ msgstr "Configura Localizzazione Italiana"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,create_uid:0
-#: field:l10n_it.config.settings,create_uid:0
-#: field:l10n_it.config.settings,create_uid
 msgid "Created by"
 msgstr "Creato da"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,create_date:0
-#: field:l10n_it.config.settings,create_date:0
-#: field:l10n_it.config.settings,create_date
 msgid "Created on"
-msgstr "Data di creazione"
+msgstr "Creato il"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,display_name:0
-#: field:l10n_it.config.settings,display_name:0
-#: field:l10n_it.config.settings,display_name
 msgid "Display Name"
-msgstr "Visualizza nome"
+msgstr "Nome da visualizzare"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,id:0
-#: field:l10n_it.config.settings,id:0
-#: field:l10n_it.config.settings,id
 msgid "ID"
 msgstr "ID"
 
 #. module: l10n_it_base
 #: help:l10n_it.config.settings,module_l10n_it_fiscalcode:0
-#: help:l10n_it.config.settings,module_l10n_it_fiscalcode:0
-#: help:l10n_it.config.settings,module_l10n_it_fiscalcode
 msgid ""
 "Install l10n_it_fiscalcode module for fiscal\n"
 "code management"
@@ -88,8 +81,6 @@ msgstr ""
 
 #. module: l10n_it_base
 #: help:l10n_it.config.settings,module_l10n_it_pec:0
-#: help:l10n_it.config.settings,module_l10n_it_pec:0
-#: help:l10n_it.config.settings,module_l10n_it_pec
 msgid "Install l10n_it_pec module for pec mail management"
 msgstr "Installa il modulo l10n_it_pec per la gestione della mail pec"
 
@@ -100,24 +91,18 @@ msgstr "Localizzazione Italiana"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,__last_update:0
-#: field:l10n_it.config.settings,__last_update:0
-#: field:l10n_it.config.settings,__last_update
 msgid "Last Modified on"
-msgstr "Data ultima modifica"
+msgstr "Ultima modifica il"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,write_uid:0
-#: field:l10n_it.config.settings,write_uid:0
-#: field:l10n_it.config.settings,write_uid
 msgid "Last Updated by"
-msgstr "Ultima modifica di"
+msgstr "Ultima Modifica di"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,write_date:0
-#: field:l10n_it.config.settings,write_date:0
-#: field:l10n_it.config.settings,write_date
 msgid "Last Updated on"
-msgstr "Data ultima modifica"
+msgstr "Data ultimo aggiornamento"
 
 #. module: l10n_it_base
 #: view:l10n_it.config.settings:l10n_it_base.view_l10n_it_config_settings
@@ -126,15 +111,11 @@ msgstr "Profilo Partner"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,module_l10n_it_pec:0
-#: field:l10n_it.config.settings,module_l10n_it_pec:0
-#: field:l10n_it.config.settings,module_l10n_it_pec
 msgid "Use Pec Mail in Partner Profile"
 msgstr "Usa Mail Pec nel Profilo Partner"
 
 #. module: l10n_it_base
 #: field:l10n_it.config.settings,module_l10n_it_fiscalcode:0
-#: field:l10n_it.config.settings,module_l10n_it_fiscalcode:0
-#: field:l10n_it.config.settings,module_l10n_it_fiscalcode
 msgid "Use fiscal code in Partner Profile"
 msgstr "Usa il codice fiscale nel profilo del partner "
 
@@ -142,4 +123,3 @@ msgstr "Usa il codice fiscale nel profilo del partner "
 #: view:l10n_it.config.settings:l10n_it_base.view_l10n_it_config_settings
 msgid "or"
 msgstr "o"
-

@@ -39,30 +39,12 @@ class AccountTax(models.Model):
         'Law reference', size=128)
 
     def get_tax_by_invoice_tax(self, cr, uid, invoice_tax, context=None):
-        if ' - ' in invoice_tax:
-            tax_descr = invoice_tax.split(' - ')[0]
-            tax_ids = self.search(cr, uid, [
-                ('description', '=', tax_descr),
-            ], context=context)
-            if not tax_ids:
-                raise UserError(
-                    _('Error'), _('No tax %s found') %
-                    tax_descr)
-            if len(tax_ids) > 1:
-                raise UserError(
-                    _('Error'), _('Too many tax %s found') %
-                    tax_descr)
-        else:
-            tax_name = invoice_tax
-            tax_ids = self.search(cr, uid, [
-                ('name', '=', tax_name),
-            ], context=context)
-            if not tax_ids:
-                raise UserError(
-                    _('Error'), _('No tax %s found') %
-                    tax_name)
-            if len(tax_ids) > 1:
-                raise UserError(
-                    _('Error'), _('Too many tax %s found') %
-                    tax_name)
+        tax_ids = self.pool['account.tax'].search(
+            cr, uid, [('tax_code_id', '=', invoice_tax.tax_code_id.id)])
+        if not len(tax_ids):
+            raise UserError(
+                _('Error'), _('No tax %s found') % invoice_tax.name)
+        if len(tax_ids) > 1:
+            # FIXME 
+            pass
         return tax_ids[0]

@@ -1,14 +1,11 @@
-Features / Funzioni
--------------------
-
 +--------------------------------------+----------+----------------------------------------------+
 | Feature / Funzione                   |  Status  | Notes / Note                                 |
 +--------------------------------------+----------+----------------------------------------------+
-| Emissione FatturaPA                  | |check|  | Genera file .xml versione 1.2                |
+| Emissione FatturaPA                  | |check|  | Genera file .xml versione 1.2.1              |
 +--------------------------------------+----------+----------------------------------------------+
-| Emissione Fattura B2B                | |check|  | Genera file .xml versione 1.2                |
+| Emissione Fattura B2B                | |check|  | Genera file .xml versione 1.2.1              |
 +--------------------------------------+----------+----------------------------------------------+
-| Dati azienda da fattura              | |check|  | Versione OCA utilizza dati azienda da utente |
+| Dati azienda da fattura              | |check|  |                                              |
 +--------------------------------------+----------+----------------------------------------------+
 | Controllo dati durante inserimento   | |check|  |                                              |
 +--------------------------------------+----------+----------------------------------------------+

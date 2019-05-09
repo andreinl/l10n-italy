@@ -502,12 +502,12 @@ class AccountVatCommunication(orm.Model):
         return True
 
     def onchange_fiscalcode(self, cr, uid, ids, fiscalcode, name,
-                            country=None, context=None):
+                            country_id=None, context=None):
         name = name or 'fiscalcode'
         if fiscalcode:
             country_model = self.pool.get('res.country')
-            if country and country_model.browse(
-                    cr, uid, country.id).code != 'IT':
+            if country_id and country_model.browse(
+                    cr, uid, country_id).code != 'IT':
                 return {'value': {name: fiscalcode,
                                   'individual': True}}
             elif len(fiscalcode) == 11:
@@ -709,7 +709,7 @@ class CommitmentLine(orm.AbstractModel):
             r = self.pool['account.vat.communication'].onchange_fiscalcode(
                 cr, uid, partner.id,
                 partner.fiscalcode, None,
-                country_id=partner.country_id,
+                country_id=partner.country_id.id,
                 context=context)
             if 'warning' in r:
                 res['xml_Error'] += self._get_error(
@@ -772,10 +772,10 @@ class CommitmentLine(orm.AbstractModel):
             if address.zip:
                 res['xml_CAP'] = address.zip.replace('x', '0').replace('%',
                                                                        '0')
-            if len(res['xml_CAP']) != 5 or not res['xml_CAP'].isdigit():
-                raise orm.except_orm(
-                    _('Error!'),
-                    _('Partner %s has wrong zip code') % (partner.name))
+                if len(res['xml_CAP']) != 5 or not res['xml_CAP'].isdigit():
+                    raise orm.except_orm(
+                        _('Error!'),
+                        _('Partner %s has wrong zip code') % (partner.name))
         res['xml_Comune'] = address.city or ' '
         if not address.city:
             raise orm.except_orm(

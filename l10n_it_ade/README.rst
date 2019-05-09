@@ -21,11 +21,11 @@ Overview / Panoramica
 
 This module has no specific function for End-user.
 
-It defines the structures by Italian Tax Authority to manage
+It defines the structures by Italian IRS (Tax Authority) to manage
 all fiscal communications.
 Inside there are xml schema files used by FatturaPA, EInvoice and VAT settlement.
 
-This module requires `PyXB 1.2.4 <http://pyxb.sourceforge.net/>`__
+This module requires `PyXB 1.2.4 <http://pyxb.sourceforge.net/>`__ or `PyXB 1.2.5 <http://pyxb.sourceforge.net/>`__
 
 |
 
@@ -33,25 +33,17 @@ This module requires `PyXB 1.2.4 <http://pyxb.sourceforge.net/>`__
 =================================
 
 Questo modulo non ha funzioni specifiche per l'utente finale.
-Contiene dati e definizioni stabilite dall'Agenzia delle Entrate
+Contiene dati e definizioni come stabilito dall'Agenzia delle Entrate
 All'interno sono presenti gli schemi xml usati da FatturaPA,
 Fattura Elettronica B2B, Liquidazione IVA elettronica e Comunicazione IVA.
 
 |info| Questo modulo è incompatibile con alcuni moduli OCA.
 
-|warning| Lo schema di definizione dei file xml, pubblicato
-con urn:www.agenziaentrate.gov.it:specificheTecniche è base per tutti i file
-xml dell'Agenzia delle Entrate; come conseguenza nasce un conflitto tra
-moduli diversi che riferiscono allo schema dell'Agenzia delle Entrate,
-segnalato dall'errore:
-
-|exclamation| name CryptoBinary used for multiple values in typeBinding
-
 Tutti i moduli della localizzazione italiana che generano file xml dipendenti
 dallo schema dell'Agenzia delle Entrate devono dichiare il modulo
 `l10n_it_ade <https://github.com/zeroincombenze/l10n-italy/tree/8.0/l10n_it_ade>`__ come dipendenza.
 
-Per maggiori informazioni visitare il sito www.odoo-italia.org o contattare
+Per maggiori informazioni contattare
 l'ultimo autore: Antonio M. Vigliotti <antoniomaria.vigliotti@gmail.com>.
 
 |
@@ -65,13 +57,11 @@ Features / Funzioni
 +------------------------------------------------------+----------+----------------------------------------------+
 | Feature / Funzione                                   |  Status  | Notes / Note                                 |
 +------------------------------------------------------+----------+----------------------------------------------+
-| Generate / Emissione FatturaPA                       | |check|  | Genera file .xml versione 1.2                |
+| Fiscal Invoice Type / Tipo fattura fiscale           | |check|  | Codifica tipo di fattura come da AdE         |
 +------------------------------------------------------+----------+----------------------------------------------+
-| Generate / Emissione Fattura B2B                     | |check|  | Genera file .xml versione 1.2                |
+| Codice Carica                                        | |check|  | Codifica codice carica come da AdE           |
 +------------------------------------------------------+----------+----------------------------------------------+
-| Company info form invoice / Dati azienda da fattura  | |check|  | Versione OCA utilizza dati azienda da utente |
-+------------------------------------------------------+----------+----------------------------------------------+
-| Validation suring editing / Controlli in tempo reale | |check|  |                                              |
+| Tax Nature / Natura fiscale dell'IVA                 | |check|  | Codifica natura fiscale dell'IVA come da AdE |
 +------------------------------------------------------+----------+----------------------------------------------+
 
 
@@ -87,9 +77,9 @@ Certifications / Certificazioni
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
 | Logo                 | Ente/Certificato                                                                                                                                                                                                  | Data inizio   | Da fine      | Note                                         |
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-| |xml\_schema|        | `ISO + Agenzia delle Entrate <http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Specifiche+tecniche/Specifiche+tecniche+comunicazioni/Fatture+e+corrispettivi+ST/>`__                             | 01-06-2017    | 31-12-2018   | Validazione contro schema xml                |
+| |xml\_schema|        | `ISO + Agenzia delle Entrate <http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Specifiche+tecniche/Specifiche+tecniche+comunicazioni/Fatture+e+corrispettivi+ST/>`__                             | 01-06-2017    | 31-12-2019   | Validazione contro schema xml                |
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-| |FatturaPA|          | `FatturaPA <https://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Schede/Comunicazioni/Fatture+e+corrispettivi/Fatture+e+corrispettivi+ST/ST+invio+di+fatturazione+elettronica/?page=schedecomunicazioni/>`__  | 01-06-2017    | 31-12-2018   | Controllo tramite sito Agenzia delle Entrate |
+| |FatturaPA|          | `FatturaPA <https://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Schede/Comunicazioni/Fatture+e+corrispettivi/Fatture+e+corrispettivi+ST/ST+invio+di+fatturazione+elettronica/?page=schedecomunicazioni/>`__  | 01-06-2017    | 31-12-2019   | Controllo tramite sito Agenzia delle Entrate |
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
 
 
@@ -113,22 +103,25 @@ Usage / Uso
 OCA comparation / Confronto con OCA
 -----------------------------------
 
-OCA Differences / Differenze da OCA
------------------------------------
-
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
-| Description / Descrizione            | Odoo Italia             | OCA                     | Notes / Note                   |
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
-| Company / Azienda                    | By User / Da Utente     | By Invoice / Da Fattura | Different layout               |
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
-| PEC                                  | PEC fattura o aziendale | Solo PEC fattura        |                                |
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
-| Phone + Fax / Telefono + Fax         | Formato libero          | Solo numeri senza segni |                                |
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
-| Controllo dati durante inserimento   | |check|                 | |no_check|              |                                |
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
-| Strutturazione dati                  |                         |                         | Mix moduli con compatibile     |
-+--------------------------------------+-------------------------+-------------------------+--------------------------------+
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Dato Fattura Elettronica       | Nome tecnico                 | Modulo OCA                  | Modulo OIA                  | Note tecnico OCA          | Nome tecnico OIA          | Note                                     |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Schema di definione xsd        |                              | l10n_it_fatturapa           | l10n_it_ade                 |                           |                           | Il modulo di OIA serve anche alla liquid |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Natura dell'IVA                |                              | l10n_it_account_tax_kind    | l10n_it_ade                 | account.tax.kind          | italy.ade.tax.nature      | Estensione della tabella account.tax usa |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Termini di pagamento           |                              | l10n_it_fiscal_payment_term | l10n_it_fiscal_payment_term | fatturapa.payment_term    | fatturapa.payment_term    | Modelli compatibili tra OIA e OCA        |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Metodi di pagamento            |                              | l10n_it_fiscal_payment_term | l10n_it_fiscal_payment_term | fatturapa.payment_method  | fatturapa.payment_method  | Modelli compatibili tra OIA e OCA        |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Codice Destinatario            | codice_destinatario          | l10n_it_fatturapa           | l10n_it_fiscal_ipa          | res.partner               | res.partner               |                                          |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Partner è PA?                 | is_pa                        | l10n_it_fatturapa           | l10n_it_fiscal_ipa          | res.partner               | res.partner               |                                          |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Soggetto a Fattura elettronica | electronic_invoice_subjected | l10n_it_fatturapa           | l10n_it_fiscal_ipa          | res.partner               | res.partner               | Il nome del campo è diverso             |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
+| Regime Fiscale                 | fiscal_position              | l10n_it_fatturapa           | l10n_it_fatturapa           | fatturapa.fiscal_position | fatturapa.fiscal_position |                                          |
++--------------------------------+------------------------------+-----------------------------+-----------------------------+---------------------------+---------------------------+------------------------------------------+
 
 
 |
@@ -144,7 +137,7 @@ Prerequisites / Prerequisiti
 ----------------------------
 
 
-* python
+* python2.7+
 * postgresql 9.2+
 
 |
@@ -216,7 +209,7 @@ Support / Supporto
 ------------------
 
 
-|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__ and free support is supplied through `Odoo Italia Associazione Forum <https://odoo-italia.org/index.php/kunena/recente>`__
+|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__
 
 
 |
@@ -285,7 +278,7 @@ La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato ita
 
 |
 
-Last Update / Ultimo aggiornamento: 2018-12-03
+Last Update / Ultimo aggiornamento: 2019-03-20
 
 .. |Maturity| image:: https://img.shields.io/badge/maturity-Alfa-red.png
     :target: https://odoo-community.org/page/development-status

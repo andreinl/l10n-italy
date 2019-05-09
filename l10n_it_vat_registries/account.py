@@ -31,7 +31,7 @@ class AccountTaxCode(models.Model):
 
     @api.one
     def sum_by_period_and_journals(self, period_id, journal_ids):
-        # using self.id beacuse _sum returns
+        # using self.id because _sum returns
         # {tax_code_id: sum, child_tax_code_id: sum2, ...}
         return self._sum(
             False, False,

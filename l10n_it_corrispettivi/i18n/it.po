@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * l10n_it_corrispettivi
-# 
+#
 # Translators:
 # OCA Transbot <transbot@odoo-community.org>, 2016
 # Paolo Valier <paolo.valier@hotmail.it>, 2016
@@ -13,10 +13,10 @@ msgstr ""
 "PO-Revision-Date: 2016-11-29 12:51+0000\n"
 "Last-Translator: Paolo Valier <paolo.valier@hotmail.it>, 2016\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_it_corrispettivi
@@ -289,18 +289,18 @@ msgstr "Imposte"
 #: view:account.invoice:l10n_it_corrispettivi.corrispettivi_form
 msgid ""
 "This button only appears when the state of the invoice is 'paid' (showing "
-"that it has been fully reconciled) and auto-computed boolean 'reconciled' is"
-" False (depicting that it's not the case anymore). In other words, the "
+"that it has been fully reconciled) and auto-computed boolean 'reconciled' is "
+"False (depicting that it's not the case anymore). In other words, the "
 "invoice has been dereconciled and it does not fit anymore the 'paid' state. "
 "You should press this button to re-open it and let it continue its normal "
 "process after having resolved the eventual exceptions it may have created."
 msgstr ""
-"Questo pulsante compare solo quando lo stato della fattura è 'pagato' "
-"(mostrando che è stata conciliata completamente) e il campo auto-calcolato "
-"'riconciliato' è impostato su Falso (descrivendo che non è più il caso). In "
-"altre parole, la fattura è stata de-riconciliata e non si adatta più allo "
-"stato 'pagato'. Premere questo pulsante per riaprirla e permetterle di "
-"continuare il suo normale processo dopo aver risolto eventuali eccezioni "
+"Questo pulsante compare solo quando lo stato della fattura è "
+"'pagato' (mostrando che è stata conciliata completamente) e il campo auto-"
+"calcolato 'riconciliato' è impostato su Falso (descrivendo che non è più il "
+"caso). In altre parole, la fattura è stata de-riconciliata e non si adatta "
+"più allo stato 'pagato'. Premere questo pulsante per riaprirla e permetterle "
+"di continuare il suo normale processo dopo aver risolto eventuali eccezioni "
 "eventualmente create."
 
 #. module: l10n_it_corrispettivi

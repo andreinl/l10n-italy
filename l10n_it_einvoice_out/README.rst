@@ -26,8 +26,6 @@ http://www.fatturapa.gov.it/export/fatturazione/it/normativa/norme.htm
 
 |warning| Read carefully note of module l10n_it_einvoice_base before install this module
 
-|halt| Do not use this module on production environment: it is an aplha release
-subjected to update.
 
 |
 
@@ -37,40 +35,41 @@ subjected to update.
 Questo modulo permette di generare il file xml della E-Fattura versione 1.2
 da trasmettere al sistema di interscambio SdI.
 
-|warning| Lo schema di definizione dei file xml, pubblicato
-con urn:www.agenziaentrate.gov.it:specificheTecniche è base per tutti i file
-xml dell'Agenzia delle Entrate; come conseguenza nasce un conflitto tra
-moduli diversi che riferiscono allo schema dell'Agenzia delle Entrate,
-segnalato dall'errore:
+::
 
-|exclamation| **name CryptoBinary used for multiple values in typeBinding**
+    Destinatari:
+
+Il modulo è destinato a tutte le aziende che dal 2019 dovranno emettere fattura elettronica
+
+
+::
+
+    Normativa:
+
+Le leggi inerenti la fattura elettronica sono numerose. Potete consultare la `normativa fattura elettronica <https://www.fatturapa.gov.it/export/fatturazione/it/normativa/norme.htm>`__
+
 
 Tutti i moduli della localizzazione italiana che generano file xml dipendenti
 dallo schema dell'Agenzia delle Entrate **devono** dichiare il modulo
 `l10n_it_ade <../l10n_it_ade>`__ come dipendenza.
 
-Per maggiori informazioni visitare il sito www.odoo-italia.org o contattare
+Per maggiori informazioni contattare
 l'ultimo autore: Antonio M. Vigliotti <antoniomaria.vigliotti@gmail.com>.
 
-|halt| Non utilizzare ancora questo modulo in produzione: alpha release soggetta
-ad ulteriori modifiche
 
 |
 
 Features / Caratteristiche
 --------------------------
 
-Features / Funzioni
--------------------
-
 +--------------------------------------+----------+----------------------------------------------+
 | Feature / Funzione                   |  Status  | Notes / Note                                 |
 +--------------------------------------+----------+----------------------------------------------+
-| Emissione FatturaPA                  | |check|  | Genera file .xml versione 1.2                |
+| Emissione FatturaPA                  | |check|  | Genera file .xml versione 1.2.1              |
 +--------------------------------------+----------+----------------------------------------------+
-| Emissione Fattura B2B                | |check|  | Genera file .xml versione 1.2                |
+| Emissione Fattura B2B                | |check|  | Genera file .xml versione 1.2.1              |
 +--------------------------------------+----------+----------------------------------------------+
-| Dati azienda da fattura              | |check|  | Versione OCA utilizza dati azienda da utente |
+| Dati azienda da fattura              | |check|  |                                              |
 +--------------------------------------+----------+----------------------------------------------+
 | Controllo dati durante inserimento   | |check|  |                                              |
 +--------------------------------------+----------+----------------------------------------------+
@@ -82,15 +81,12 @@ Features / Funzioni
 Certifications / Certificazioni
 -------------------------------
 
-Certifications / Certificazioni
--------------------------------
-
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
 | Logo                 | Ente/Certificato                                                                                                                                                                                                  | Data inizio   | Da fine      | Note                                         |
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-| |xml\_schema|        | `ISO + Agenzia delle Entrate <http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Specifiche+tecniche/Specifiche+tecniche+comunicazioni/Fatture+e+corrispettivi+ST/>`__                             | 01-06-2017    | 31-12-2018   | Validazione contro schema xml                |
+| |xml\_schema|        | `ISO + Agenzia delle Entrate <http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Specifiche+tecniche/Specifiche+tecniche+comunicazioni/Fatture+e+corrispettivi+ST/>`__                             | 01-06-2017    | 31-12-2019   | Validazione contro schema xml                |
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
-| |FatturaPA|          | `FatturaPA <https://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Schede/Comunicazioni/Fatture+e+corrispettivi/Fatture+e+corrispettivi+ST/ST+invio+di+fatturazione+elettronica/?page=schedecomunicazioni/>`__  | 01-06-2017    | 31-12-2018   | Controllo tramite sito Agenzia delle Entrate |
+| |FatturaPA|          | `FatturaPA <https://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Schede/Comunicazioni/Fatture+e+corrispettivi/Fatture+e+corrispettivi+ST/ST+invio+di+fatturazione+elettronica/?page=schedecomunicazioni/>`__  | 01-06-2017    | 31-12-2019   | Controllo tramite sito Agenzia delle Entrate |
 +----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------+--------------+----------------------------------------------+
 
 
@@ -99,19 +95,22 @@ Certifications / Certificazioni
 Usage / Utilizzo
 ----------------
 
-Usage / Uso
-===========
-
 |menu| Configurazione > Configurazione > Contabilità > Fattura PA |do_right| Impostare i vari parametri
+
 |menu| Contabilità > Configurazione > Sezionali > Sezionali |do_right| Impostare sezionale fattura elettronica
+
 |menu| Contabilità > Configurazione > Imposte > Imposte |do_right| Impostare natura codici IVA
+
 |menu| Contabilità > Configurazione > Management > Termini di pagamento |do_right| Collegare i termini di pagamento con i relativi termini fiscali
+
 |menu| Contabilità > Clienti > Clienti |do_right| Impostare Codice Destinatario o PEC o IPA, nazione, partita IVA, codice fiscale
+
 |menu| Contabilità > Configurazione > Contabilità > Posizioni fiscali |do_right| Collegare posizioni fiscali con regimi fiscali
 
 Per consultazione (non modificare):
 
 |menu| Contabilità > Configurazione > Contabilità > Definizioni Agenzia delle Entrate > Natura dell'IVA
+
 |menu| Contabilità > Configurazione > Contabilità > Definizioni Agenzia delle Entrate > Tipi Fattura
 
 
@@ -151,7 +150,7 @@ Prerequisites / Prerequisiti
 ----------------------------
 
 
-* python
+* python2.7+
 * postgresql 9.2+
 
 |
@@ -223,7 +222,7 @@ Support / Supporto
 ------------------
 
 
-|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__ and free support is supplied through `Odoo Italia Associazione Forum <https://odoo-italia.org/index.php/kunena/recente>`__
+|Zeroincombenze| This module is maintained by the `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__
 
 
 |
@@ -265,18 +264,25 @@ Odoo is a trademark of `Odoo S.A. <https://www.odoo.com/>`__ (formerly OpenERP)
 Authors / Autori
 ----------------
 
+* `Davide Corio`__
 * `Agile Business Group sagl <https://www.agilebg.com/>`__
 * `Innoviu srl <http://www.innoviu.com>`__
+* `Odoo Italia Network`__
 * `SHS-AV s.r.l. <https://www.zeroincombenze.it/>`__
 
 Contributors / Collaboratori
 ----------------------------
 
-* Davide Corio <davide.corio@abstract.it>
+* Davide Corio
 * Roberto Onnis <roberto.onnis@innoviu.com>
 * Lorenzo Battistini <lorenzo.battistini@agilebg.com>
 * Alessio Gerace <alessio.gerace@agilebg.com>
-* Alex Comba <alex.comba@agilebg.com>
+* Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com>
+
+Translations by / Traduzioni a cura di
+--------------------------------------
+
+* Sergio Zanchetta <https://github.com/primes2h>
 * Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com>
 
 |
@@ -299,7 +305,7 @@ La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato ita
 
 |
 
-Last Update / Ultimo aggiornamento: 2018-11-22
+Last Update / Ultimo aggiornamento: 2019-03-20
 
 .. |Maturity| image:: https://img.shields.io/badge/maturity-Alfa-red.png
     :target: https://odoo-community.org/page/development-status

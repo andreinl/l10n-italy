@@ -1,39 +1,106 @@
 
 <section class="oe_container">
     <div class="oe_row oe_spaced">
-        <h2 class="oe_slogan" style="color:#162832;">EInvoice + FatturaPA / Fattura Elettronica + FatturaPA</h2>
+        <h2 class="oe_slogan" style="color:#162832;">Infrastructure for Italian Electronic Invoice + FatturaPA / Fattura Elettronica + FatturaPA</h2>
         <div class="oe_span6">
             <p align="center">
                 <img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/flags/en_US.png" alt="English"/>
             </p>
-            <p class="oe_mt16" align="justify"><p align="justify">
-This module manage infrastructure to manage Italian E Invoice and FatturaPA
-as per send to the SdI (Exchange System by Italian Tax Authority)
-</p></p>
+            <p class="oe_mt16" align="justify">This module manage infrastructure to manage Italian E Invoice and FatturaPA
+as per send to the SdI (Exchange System by Italian Tax Authority)</p>
         </div>
         <div class="oe_span6">
             <p align="center">
                 <img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/flags/it_IT.png" alt="Italiano"/>
             </p>
-            <p class="oe_mt16" align="justify"><p align="justify">
-Questo modulo gestisce l'infrastruttura per generare il file xml della Fattura 
-Elettronica e della FatturaPA, versione 1.2, da trasmettere al sistema di interscambio SdI.
+            <p class="oe_mt16" align="justify">Questo modulo gestisce l'infrastruttura per generare il file xml della Fattura 
+Elettronica e della FatturaPA, versione 1.2.1, da trasmettere al sistema di interscambio SdI.
 </p><p align="justify">
-In anagrafica clienti &#232; disponibile una nuova linguetta ove inserire i dati per la fattura elettronica.
+In anagrafica clienti i dati per la fattura elettronica sono inseribili nella scheda "Agenzia delle Entrate".
+Le casistiche previste sono:
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a soggetto IVA
+</p><p align="justify">
+Si tratta della casistica pi&#249; comune. Selezionare "Soggetto a fattura elettronica"
+e compilare il "Codice destinatario" o la "PEC".
+La partita IVA &#232; un dato obligatorio ai fini dell'invio.
+L'eventuale invio di una fattura in formato PDF &#232; una fattura di cortesia e non
+ha valore legale.
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a PA
+</p><p align="justify">
+Questa casistica &#232; attiva gi&#224; dal 2016. Impostare "Pubblica Amministrazione"
+e compilare il "Codice ufficio".
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a privato senza partita IVA
+</p><p align="justify">
+La legge non prevede l'obbligo di emissione della fattura elettronica ma &#232;
+ammessa l'emissione a condizione che venga inviata una fattura in formato PDF
+al cliente. Inserire il valore "0000000" nel codice destinatario
+e il codice fiscale.
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a soggetto IVA senza Codice Destinatario ne PEC
+</p><p align="justify">
+Casistica in cui un cliente con partita IVA non ha fornito
+ne il proprio Codice Destinatario ne la propria PEC. Si riconduce al caso
+precedente, inserendo il valore "0000000" nel codice destinatario ed il
+codice fiscale. Anche in questo caso &#232; obbligatorio inviare una fattura in
+formato PDF al cliente.
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a rappresentante fiscale in Italia
+</p><p align="justify">
+Casistica di aziende estere con rappresentanza fiscale in Italia.
+Inserire nei contatti un indirizzo di fatturazione di tipo "Rappresentante fiscale"
+con la partita IVA italiana ed i dati per la fatturazione elettronica.
+La fattura va emessa al rappresentante fiscale.
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a stabile organizzazione
+</p><p align="justify">
+Casistica di aziende estere con stabile organizzazione in Italia.
+Inserire nei contatti un indirizzo di fatturazione di tipo "Stabile organizzazione"
+con la partita IVA italiana ed i dati per la fatturazione elettronica.
+La fattura va emessa alla stabile organizzazione.
+</p><p align="justify">
+::
+</p><p align="justify">
+    Fattura elettronica a soggetto estero
+</p><p align="justify">
+Inserire il valore XXXXXXX nel codice destinatario. Il file XML viene generato
+con le opportune correzione per la validazioni dell'Agenzia delle Entrate.
+Anche in questo caso &#232; obbligatorio inviare una fattura in
+formato PDF al cliente.
+</p><p align="justify">
+::
+</p><p align="justify">
+Configurare le imposte riguardo a "Natura non imponibile",
+"Riferimento legislativo" ed "Esigibilit&#224; IVA"
+</p><p align="justify">
+Configurare i dati della fattura elettronica nella configurazione della contabilit&#224;, dove necessario
 </p><p align="justify">
 ::
 </p><p align="justify">
     Destinatari:
 </p><p align="justify">
-Il modulo &#232; destinato a tutte le aziende che dal 2019 dovarnno emettere fattura elettronica
+Il modulo &#232; destinato a tutte le aziende che dal 2019 dovranno emettere fattura elettronica
 </p><p align="justify">
 </p><p align="justify">
 ::
 </p><p align="justify">
     Normativa:
 </p><p align="justify">
-Le leggi inerenti la fattura elettronica sono numerose. Potete consultare la <a href="https://www.fatturapa.gov.it/export/fatturazione/it/normativa/norme.htm">normativa fattura elettronica</a>
-</p></p>
+Le leggi inerenti la fattura elettronica sono numerose. Potete consultare la <a href="https://www.fatturapa.gov.it/export/fatturazione/it/normativa/norme.htm">normativa fattura elettronica</a></p>
         </div>
     </div>
 </section>

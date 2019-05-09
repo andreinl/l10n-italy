@@ -2,78 +2,78 @@
 # This file contains the translation of the following modules:
 # * l10n_it_central_journal
 #
+# Translators:
+# Paolo Valier <paolo.valier@hotmail.it>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-16 09:41+0000\n"
-"PO-Revision-Date: 2018-07-16 14:05+0200\n"
-"Last-Translator: Antonio M. Vigliotti <antoniomaria.vigliotti@gmail>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2017-10-28 05:14+0000\n"
+"PO-Revision-Date: 2017-10-28 05:14+0000\n"
+"Last-Translator: Paolo Valier <paolo.valier@hotmail.it>, 2017\n"
+"Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.3.4\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_it_central_journal
 #: model:ir.actions.report.xml,name:l10n_it_central_journal.action_report_giornale
 msgid "Account central journal"
-msgstr "Libro Giornale Bollato"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Account code"
-msgstr "Codice Conto"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Account move"
-msgstr "Registrazione Contabile"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Account name"
-msgstr "Nome Conto"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: selection:wizard.giornale,target_move:0
-#: selection:wizard.giornale,target_move
 msgid "All"
 msgstr "Tutti"
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "Cancel"
-msgstr "Annulla"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: model:ir.actions.act_window,name:l10n_it_central_journal.action_giornale
 #: model:ir.ui.menu,name:l10n_it_central_journal.menu_giornale
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "Central Journal"
-msgstr "Libro Giornale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:account.fiscalyear:l10n_it_central_journal.account_central_journal_form_view
 msgid "Central journal info"
-msgstr "Informazione del Libro Giornale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,create_uid:0
-#: field:wizard.giornale,create_uid
 msgid "Created by"
 msgstr "Creato da"
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,create_date:0
-#: field:wizard.giornale,create_date
 msgid "Created on"
-msgstr "Data di creazione"
+msgstr "Creato il"
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Credit"
-msgstr "Avere"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
@@ -81,228 +81,206 @@ msgid "Date"
 msgstr "Data"
 
 #. module: l10n_it_central_journal
-#: code:addons/l10n-italy/l10n_it_central_journal/wizard/print_giornale.py:142
 #: code:addons/l10n_it_central_journal/wizard/print_giornale.py:142
-#: code:addons/l10n-italy/l10n_it_central_journal/wizard/print_giornale.py:142
-#: code:addons/l10n_it_central_journal/wizard/print_giornale.py:142
+#, python-format
 msgid "Date already printed"
-msgstr "Data già stampata"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "Dates movements"
-msgstr "Date dei movimenti"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Debit"
-msgstr "Dare"
+msgstr ""
+
+#. module: l10n_it_central_journal
+#: field:report.l10n_it_central_journal.report_giornale,display_name:0
+#: field:wizard.giornale,display_name:0
+msgid "Display Name"
+msgstr "Nome da visualizzare"
 
 #. module: l10n_it_central_journal
 #: selection:wizard.giornale,target_move:0
-#: selection:wizard.giornale,target_move
 msgid "Draft"
 msgstr "Bozza"
 
 #. module: l10n_it_central_journal
 #: field:account.journal,central_journal_exclude:0
-#: field:account.journal,central_journal_exclude
 msgid "Exclude from Central             Journal"
-msgstr "Esclusione da Libro             Giornale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Final Balance"
-msgstr "Saldo finale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "Final print"
-msgstr "Stampa definitiva"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: model:ir.model,name:l10n_it_central_journal.model_account_fiscalyear
 #: field:wizard.giornale,fiscalyear:0
-#: field:wizard.giornale,fiscalyear
 msgid "Fiscal Year"
 msgstr "Anno Fiscale"
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,date_move_line_from:0
 #: field:wizard.giornale,date_move_line_from_view:0
-#: field:wizard.giornale,date_move_line_from
-#: field:wizard.giornale,date_move_line_from_view
 msgid "From date"
-msgstr "Dalla data"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:report.l10n_it_central_journal.report_giornale,id:0
 #: field:wizard.giornale,id:0
-#: field:report.l10n_it_central_journal.report_giornale,id
-#: field:wizard.giornale,id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Initial Balance"
-msgstr "Saldo iniziale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: model:ir.model,name:l10n_it_central_journal.model_account_journal
 msgid "Journal"
-msgstr "Registro"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 #: field:wizard.giornale,journal_ids:0
-#: field:wizard.giornale,journal_ids
 msgid "Journals"
-msgstr "Registri"
+msgstr ""
+
+#. module: l10n_it_central_journal
+#: field:report.l10n_it_central_journal.report_giornale,__last_update:0
+#: field:wizard.giornale,__last_update:0
+msgid "Last Modified on"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,write_uid:0
-#: field:wizard.giornale,write_uid
 msgid "Last Updated by"
-msgstr "Ultima modifica di"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,write_date:0
-#: field:wizard.giornale,write_date
 msgid "Last Updated on"
-msgstr "Data ultima modifica"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,last_def_date_print:0
-#: field:wizard.giornale,last_def_date_print
 msgid "Last definitive date print"
-msgstr "Ultima stampa ufficiale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:account.fiscalyear,date_last_print:0
-#: field:account.fiscalyear,date_last_print
 msgid "Last printed date"
-msgstr "Ultima data stampata"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,fiscal_page_base:0
-#: field:wizard.giornale,fiscal_page_base
 msgid "Last printed page"
-msgstr "Ultima pagina su bollato"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "Layout"
-msgstr "Layout"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Name"
-msgstr "Nome"
+msgstr ""
 
 #. module: l10n_it_central_journal
-#: code:addons/l10n-italy/l10n_it_central_journal/wizard/print_giornale.py:118
-#: code:addons/l10n-italy/l10n_it_central_journal/wizard/print_giornale.py:157
 #: code:addons/l10n_it_central_journal/wizard/print_giornale.py:118
 #: code:addons/l10n_it_central_journal/wizard/print_giornale.py:157
-#: code:addons/l10n-italy/l10n_it_central_journal/wizard/print_giornale.py:118
-#: code:addons/l10n-italy/l10n_it_central_journal/wizard/print_giornale.py:157
-#: code:addons/l10n_it_central_journal/wizard/print_giornale.py:118
-#: code:addons/l10n_it_central_journal/wizard/print_giornale.py:157
+#, python-format
 msgid "No documents found in the current selection"
-msgstr "Nessun documento trovato con la corrente selezione"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: selection:wizard.giornale,target_move:0
-#: selection:wizard.giornale,target_move
 msgid "Posted"
-msgstr "Ufficiale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "Print"
-msgstr "Stampa"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: selection:wizard.giornale,print_state:0
-#: selection:wizard.giornale,print_state
 msgid "Printed"
-msgstr "Stampato"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:account.fiscalyear,progressive_credit:0
 #: field:wizard.giornale,progressive_credit:0
-#: field:account.fiscalyear,progressive_credit
-#: field:wizard.giornale,progressive_credit
 msgid "Progressive Credit"
-msgstr "Progressivo Avere"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:account.fiscalyear,progressive_debit:0
-#: field:account.fiscalyear,progressive_debit
 msgid "Progressive Debit"
-msgstr "Progressivo Dare"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,progressive_debit2:0
-#: field:wizard.giornale,progressive_debit2
 msgid "Progressive debit"
-msgstr "Progressivo dare"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:account.fiscalyear,progressive_line_number:0
-#: field:account.fiscalyear,progressive_line_number
 msgid "Progressive line"
-msgstr "Progressivo della riga"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:account.fiscalyear,progressive_page_number:0
-#: field:account.fiscalyear,progressive_page_number
 msgid "Progressive of the page"
-msgstr "Progressivo della pagina"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: selection:wizard.giornale,print_state:0
-#: selection:wizard.giornale,print_state
 msgid "Ready for printing"
-msgstr "Pronto per la stampa"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Ref"
-msgstr "Rif."
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:website:l10n_it_central_journal.report_giornale
 msgid "Row"
-msgstr "Riga"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,start_row:0
-#: field:wizard.giornale,start_row
 msgid "Start row"
-msgstr "Riga iniziale"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,print_state:0
-#: field:wizard.giornale,print_state
 msgid "State"
-msgstr "Stato"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,target_move:0
-#: field:wizard.giornale,target_move
 msgid "Target Move"
-msgstr "Movimenti di destinazione"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: field:wizard.giornale,date_move_line_to:0
-#: field:wizard.giornale,date_move_line_to
 msgid "To date"
-msgstr "Alla data"
+msgstr ""
 
 #. module: l10n_it_central_journal
 #: view:wizard.giornale:l10n_it_central_journal.wizard_giornale
 msgid "or"
-msgstr "o"
-
+msgstr ""
