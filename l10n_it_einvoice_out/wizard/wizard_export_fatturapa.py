@@ -818,6 +818,7 @@ class WizardExportFatturapa(models.TransientModel):
                 )
                 DettaglioLinea.ScontoMaggiorazione.append(ScontoMaggiorazione)
             if aliquota == 0.0:
+                # TODO: non_taxable_nature is depricated
                 if not line.invoice_line_tax_id[0].non_taxable_nature:
                     raise UserError(
                         _("No 'nature' field for tax %s") %
@@ -854,6 +855,7 @@ class WizardExportFatturapa(models.TransientModel):
             )
             if tax.amount == 0.0:
                 if not tax.non_taxable_nature:
+                    # TODO: non_taxable_nature is depricated
                     raise UserError(
                         _("No 'nature' field for tax %s") % tax.name)
                 riepilogo.Natura = tax.non_taxable_nature
