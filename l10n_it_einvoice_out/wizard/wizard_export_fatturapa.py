@@ -68,8 +68,6 @@ except ImportError as err:
     _logger.debug(err)
 
 STYLESHEET = 'fatturapa_v1.2.xsl'
-<<<<<<< HEAD
-=======
 CODE_NONE_IT = '0000000'
 CODE_NONE_EU = 'XXXXXXX'
 PAYTYPE_BNK_CUSTOMER = ('MP11', 'MP12', 'MP16', 'MP17', 'MP19', 'MP20', 'MP21')
@@ -101,7 +99,6 @@ XML_ESCAPE = {
 }
 IBAN_PATTERN = re.compile('[A-Z]{2}[0-9]{2}[A-Z][0-9A-Z]+')
 INHERITED_FLDS = ['codice_destinatario', 'name']
->>>>>>> upstream/8.0
 
 
 class WizardExportFatturapa(models.TransientModel):
@@ -256,12 +253,8 @@ class WizardExportFatturapa(models.TransientModel):
                                                                    parent)
         return True
 
-<<<<<<< HEAD
-    def _setCodiceDestinatario(self, cr, uid, partner, fatturapa, context=None):
-=======
     def _setCodiceDestinatario(self, cr, uid, partner, parent, fatturapa,
                                context=None):
->>>>>>> upstream/8.0
         """
         Nota sito agenzia entrate:
         Il Codice Destinatario a 7 caratteri, che può essere utilizzato solo per fatture elettroniche destinate ai
@@ -275,94 +268,55 @@ class WizardExportFatturapa(models.TransientModel):
         destinate ad Amministrazioni pubbliche si continua a prevedere l’uso del codice univoco ufficio a 6 caratteri,
         purché sia censito su indice delle Pubbliche Amministrazioni (www.indicepa.gov.it )
         """
-<<<<<<< HEAD
 
-        if partner.is_pa:
-            if partner.ipa_code:
-                code = partner.ipa_code
-            else:
-                raise orm.except_orm(
-                    _('Error!'),
-                    _("Partner %s is PA but has not IPA code") % partner.name
-                )
-        else:
-            code = partner.codice_destinatario
-            if not code or code == '0000000':
-                if partner.vat or partner.fiscalcode:
-                    if partner.country_id and partner.country_id.code == 'IT':
-                        code = '0000000'
-
-                        if partner.pec_destinatario:
-                            # if validate_email(pec_destinatario):
-                            fatturapa.FatturaElettronicaHeader.DatiTrasmissione.PECDestinatario = partner.pec_destinatario
-                            # else:
-                            #     raise orm.except_orm(_('Error!'),
-                            #                          _('{pec_email} is not correct').format(pec_email=pec_destinatario))
-                        elif partner.vat:
-                            raise orm.except_orm(
-                                _('Error!'),
-                                _('No PEC find for Partner: {partner}').format(partner=partner.name))
-                    elif partner.country_id and not partner.country_id.code == 'IT':
-                        code = 'XXXXXXX'
-                    else:
-                        raise orm.except_orm(
-                            _('Error!'),
-                            _('No Address find for Partner: {partner}').format(partner=partner.name))
-                else:
-                    raise orm.except_orm(
-                        _('Error!'),
-                        _('Please set Fiscal Code or VAT for partner {}').format(partner.name))
-            elif len(code) != 7:
-                if ' ' in code:
-                    raise orm.except_orm(
-                        _('Error!'),
-                        _('Space char in Recipient Code \'{code}\'').format(code=code)
-                    )
-                else:
-                    raise orm.except_orm(
-                        _('Error!'),
-                        _('Recipient Code {code} length is {dimension}, it should be 7').format(code=code, dimension=len(code)))
-
-        fatturapa.FatturaElettronicaHeader.DatiTrasmissione.CodiceDestinatario = code.upper()
-
-=======
-        context = context or {}
-        pec_destinatario = None
         if self._get_partner_field(cr, uid, partner, parent, 'is_pa'):
             code = self._get_partner_field(
                 cr, uid, partner, parent, 'ipa_code')
             if not code:
                 raise UserError(_(
-                    "Partner %s is PA but has not IPA code"
+                    "Partner %s is PA but has no IPA code"
                 ) % partner.name)
         else:
             code = self._get_partner_field(
                 cr, uid, partner, parent, 'codice_destinatario')
-            if not code:
-                raise UserError(_(
-                    "Partner %s is not PA but does not have Addressee Code."
-                ) % partner.name)
-        if ' ' in code:
-            raise UserError(_(
-                'Space char in Recipient Code \'%s\'') % code)
-        vat = self._get_partner_field(cr,uid, partner, parent, 'vat')
-        fiscalcode = self._get_partner_field(
-            cr, uid, partner, parent, 'fiscalcode')
-        if code not in ('000000', 'XXXXXXX') and \
-                not vat and not fiscalcode:
-            raise UserError(_(
-                "Partner %s is not PA "
-                "but does not have vat number neither fiscal code Code."
-            ) % partner.name)
-        fatturapa.FatturaElettronicaHeader.DatiTrasmissione.\
-            CodiceDestinatario = code.upper()
-        if code == '000000':
-            pec_destinatario = self._get_partner_field(
-                    cr, uid, partner, parent, 'pec_destinatario')
-        if pec_destinatario:
-            fatturapa.FatturaElettronicaHeader.DatiTrasmissione. \
-                PECDestinatario = pec_destinatario
->>>>>>> upstream/8.0
+            if not code or code == '0000000':
+                vat = self._get_partner_field(cr, uid, partner, parent, 'vat')
+                fiscalcode = self._get_partner_field(
+                    cr, uid, partner, parent, 'fiscalcode')
+
+                if vat or fiscalcode:
+                    if partner.country_id and partner.country_id.code == 'IT':
+                        code = '0000000'
+                        pec_destinatario = self._get_partner_field(
+                            cr, uid, partner, parent, 'pec_destinatario')
+                        if pec_destinatario:
+                            # if validate_email(pec_destinatario):
+                            fatturapa.FatturaElettronicaHeader.DatiTrasmissione.PECDestinatario = pec_destinatario
+                            # else:
+                            #     raise orm.except_orm(_('Error!'),
+                            #                          _('{pec_email} is not correct').format(pec_email=pec_destinatario))
+                        elif vat:
+                            raise UserError(
+                                _('No PEC find for Partner: {partner}').format(partner=partner.name))
+                    elif partner.country_id and not partner.country_id.code == 'IT':
+                        code = 'XXXXXXX'
+                    else:
+                        raise UserError(
+                            _('No Address find for Partner: {partner}').format(partner=partner.name))
+                else:
+                    raise UserError(
+                        _('Please set Fiscal Code or VAT for partner {}').format(partner.name))
+            elif len(code) != 7:
+                if ' ' in code:
+                    raise UserError(
+                        _('Space char in Recipient Code \'{code}\'').format(code=code)
+                    )
+                else:
+                    raise UserError(
+                        _('Recipient Code {code} length is {dimension}, it should be 7').format(code=code, dimension=len(code)))
+
+        fatturapa.FatturaElettronicaHeader.DatiTrasmissione.CodiceDestinatario = code.upper()
+
         return True
 
     def _setContattiTrasmittente(self, cr, uid, company, fatturapa,
@@ -372,16 +326,13 @@ class WizardExportFatturapa(models.TransientModel):
             raise UserError(
                 _('Company Telephone number not set.'))
         Telefono = self._wep_phone_number(company.phone)
+
         if not company.email:
-<<<<<<< HEAD
-            raise orm.except_orm(
-                _('Error!'), _('Company Email not set.'))
-        Email = company.einvoice_email or company.email
-=======
             raise UserError(
                 _('Company Email not set.'))
-        Email = company.email
->>>>>>> upstream/8.0
+
+        Email = company.einvoice_email or company.email
+
         fatturapa.FatturaElettronicaHeader.DatiTrasmissione.\
             ContattiTrasmittente = ContattiTrasmittenteType(
                 Telefono=Telefono, Email=Email)
