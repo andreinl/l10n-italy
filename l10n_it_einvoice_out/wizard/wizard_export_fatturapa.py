@@ -622,10 +622,11 @@ class WizardExportFatturapa(models.TransientModel):
             aliquota = line.invoice_line_tax_id[0].amount * 100
             AliquotaIVA = '%.2f' % (aliquota)
             quantity_precision = dp.get_precision('Product Unit of Measure')(cr)[1]
+            price_precision = dp.get_precision('Product Price')(cr)[1]
             DettaglioLinea = DettaglioLineeType(
                 NumeroLinea=str(line_no),
                 Descrizione=line.name.replace('\n', ' '),
-                PrezzoUnitario='%.2f' % line.price_unit,
+                PrezzoUnitario='{price:.{precision}f}'.format(price=line.price_unit, precision=price_precision),
                 Quantita="{quantity:.{precision}f}".format(quantity=line.quantity, precision=quantity_precision),
                 UnitaMisura=line.uos_id and (
                     unidecode(line.uos_id.name)) or None,

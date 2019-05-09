@@ -9,7 +9,7 @@
 #
 {
     'name': 'Italian Localization - FatturaPA - Emission',
-    'version': '8.0.3.2.1',
+    'version': '8.0.3.2.1a',
     'category': 'Localization/Italy',
     'summary': 'Electronic invoices emission',
     'author': 'Odoo Italia Associazione,'
