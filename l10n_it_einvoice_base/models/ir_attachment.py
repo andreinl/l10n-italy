@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import lxml.etree as ET
+import xml.etree.ElementTree as etree
 import re
 import binascii
 import logging
@@ -33,7 +34,8 @@ class Attachment(models.Model):
         for att in self:
             att.ftpa_preview_link = '/fatturapa/preview/%s' % att.id
 
-    def remove_xades_sign(self, xml):
+    @staticmethod
+    def remove_xades_sign(xml):
         # Recovering parser is needed for files where strings like
         # xmlns:ds="http://www.w3.org/2000/09/xmldsig#&quot;"
         # are present: even if lxml raises
@@ -48,7 +50,8 @@ class Attachment(models.Model):
                 break
         return ET.tostring(root)
 
-    def strip_xml_content(self, xml):
+    @staticmethod
+    def strip_xml_content(xml):
         recovering_parser = ET.XMLParser(recover=True)
         root = ET.XML(xml, parser=recovering_parser)
         for elem in root.iter('*'):
@@ -57,14 +60,79 @@ class Attachment(models.Model):
         return ET.tostring(root)
 
     @staticmethod
+    def remove_additional_namespaces(xml):
+        root = etree.fromstring(xml)
+        return etree.tostring(root)
+
+    @staticmethod
+    def sanitize_lines(xml):
+        root = ET.XML(xml)
+
+        for line in root.find('FatturaElettronicaBody').find('DatiBeniServizi').findall('DettaglioLinee'):
+            elem = line.find('UnitaMisura')
+            if elem is not None and not elem.text:
+                line.remove(elem)
+
+            elem = line.find('Descrizione')
+            if elem is not None and not elem.text:
+                elem.text = '---'
+
+        return ET.tostring(root)
+
+    @staticmethod
+    def remove_empty_attachment(xml):
+        root = ET.XML(xml)
+        for elem in root.iter('*'):
+            if elem.tag.find('Allegati') > -1:
+                attachment_elem = elem.find('Attachment')
+                if attachment_elem is not None and not attachment_elem.text:
+                    elem.getparent().remove(elem)
+
+        return ET.tostring(root)
+
+    @staticmethod
+    def remove_empty_id_document(xml):
+        root = ET.XML(xml)
+        for elem in root.iter('*'):
+            if elem.tag.find('DatiOrdineAcquisto') > -1:
+                document_elem = elem.find('IdDocumento')
+                if document_elem is not None and not document_elem.text:
+                    # IdDocument can't be empty
+                    document_elem.text = 'IdDocumento'
+
+        return ET.tostring(root)
+
+    @staticmethod
+    def set_fake_address(xml):
+        root = ET.XML(xml)
+        for elem in root.iter('*'):
+            if elem.tag.find('CedentePrestatore') > -1:
+                sede_elem = elem.find('Sede')
+                address_elem = sede_elem.find('Indirizzo')
+                if address_elem is not None and not address_elem.text:
+                    address_elem.text = '-'
+
+                municipality_elem = sede_elem.find('Comune')
+                if municipality_elem is not None and not municipality_elem.text:
+                    municipality_elem.text = '-'
+
+        return ET.tostring(root)
+
+    def sanitize(self, xml_string):
+        xml_string = self.remove_additional_namespaces(xml_string)
+        xml_string = self.remove_xades_sign(xml_string)
+        xml_string = self.strip_xml_content(xml_string)
+        xml_string = self.sanitize_lines(xml_string)
+        xml_string = self.set_fake_address(xml_string)
+        xml_string = self.remove_empty_attachment(xml_string)
+        xml_string = self.remove_empty_id_document(xml_string)
+
+        return xml_string
+
+    @staticmethod
     def extract_cades(data):
         info = cms.ContentInfo.load(data)
         return info['content']['encap_content_info']['content'].native
-
-    def cleanup_xml(self, xml_string):
-        xml_string = self.remove_xades_sign(xml_string)
-        xml_string = self.strip_xml_content(xml_string)
-        return xml_string
 
     def get_xml_string(self):
         try:
@@ -100,7 +168,7 @@ class Attachment(models.Model):
             pass
 
         try:
-            return self.cleanup_xml(data)
+            return self.sanitize(data)
         # cleanup_xml calls root.iter(), but root is None if the parser fails
         # Invalid xml 'NoneType' object has no attribute 'iter'
         except AttributeError as e:
