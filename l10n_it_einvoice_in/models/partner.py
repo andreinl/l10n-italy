@@ -3,9 +3,9 @@
 # Copyright 2018-19 - Odoo Italia Associazione <https://www.odoo-italia.org>
 # Copyright 2018-19 - SHS-AV s.r.l. <https://www.zeroincombenze.it>
 #
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 #
-from openerp import models, fields
+from odoo import fields, models
 
 
 class Partner(models.Model):
@@ -27,7 +27,7 @@ class Partner(models.Model):
     )
     e_invoice_detail_level = fields.Selection([
         ('0', 'Minimum'),
-        # ('1', 'Aliquote'),
+        ('1', 'Aliquote'),
         ('2', 'Maximum'),
     ], string="E-bills Detail Level",
         help="Minimum level: Bill is created with no lines; "

@@ -3,9 +3,9 @@
 # Copyright 2018-19 - Odoo Italia Associazione <https://www.odoo-italia.org>
 # Copyright 2018-19 - SHS-AV s.r.l. <https://www.zeroincombenze.it>
 #
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 #
-from openerp import fields, models, api
+from odoo import api, fields, models
 
 
 class ResCompany(models.Model):

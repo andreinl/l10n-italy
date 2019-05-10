@@ -5,7 +5,4 @@
 #
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 #
-from . import attachment
-from . import account
-from . import partner
-from . import company
+from . import test_import_fatturapa_xml

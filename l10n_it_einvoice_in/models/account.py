@@ -3,10 +3,10 @@
 # Copyright 2018-19 - Odoo Italia Associazione <https://www.odoo-italia.org>
 # Copyright 2018-19 - SHS-AV s.r.l. <https://www.zeroincombenze.it>
 #
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 #
-from openerp import fields, models, api
-import openerp.addons.decimal_precision as dp
+import odoo.addons.decimal_precision as dp
+from odoo import api, fields, models
 
 
 class AccountInvoice(models.Model):
@@ -28,6 +28,10 @@ class AccountInvoice(models.Model):
             invoice = self.browse(tup[0])
             if invoice.type in ('in_invoice', 'in_refund'):
                 name = "%s, %s" % (tup[1], invoice.partner_id.name)
+                if invoice.amount_total_signed:
+                    name += ', %s %s' % (
+                        invoice.amount_total_signed, invoice.currency_id.symbol
+                    )
                 if invoice.origin:
                     name += ', %s' % invoice.origin
                 res.append((invoice.id, name))
@@ -64,7 +68,8 @@ class AccountInvoiceLine(models.Model):
     fatturapa_attachment_in_id = fields.Many2one(
         'fatturapa.attachment.in', 'E-bill Import File',
         readonly=True,
-        related='invoice_id.fatturapa_attachment_in_id')
+        related='invoice_id.fatturapa_attachment_in_id',
+        copy=False)
 
 
 class DiscountRisePrice(models.Model):
@@ -88,14 +93,14 @@ class EInvoiceLine(models.Model):
     name = fields.Char("Description", readonly=True)
     qty = fields.Float(
         "Quantity", readonly=True,
-        digits=dp.get_precision('Product Unit of Measure')
+        digits=(12, 6),
     )
     uom = fields.Char("Unit of measure", readonly=True)
     period_start_date = fields.Date("Period Start Date", readonly=True)
     period_end_date = fields.Date("Period End Date", readonly=True)
     unit_price = fields.Float(
         "Unit Price", readonly=True,
-        digits=dp.get_precision('Product Price')
+        digits=(12, 6),
     )
     discount_rise_price_ids = fields.One2many(
         'discount.rise.price', 'e_invoice_line_id',

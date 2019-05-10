@@ -1,12 +1,12 @@
 
-=============================================================
-|icon| Italian Localization - Fattura elettronica - Ricezione
-=============================================================
+========================================================================
+|icon| Italian Localization - Fattura elettronica - Ricezione 10.0.1.3.5
+========================================================================
 
 
-**Electronic invoices reception**
+**Ricezione fatture elettroniche**
 
-.. |icon| image:: https://raw.githubusercontent.com/zeroincombenze/l10n-italy/8.0/l10n_it_einvoice_in/static/description/icon.png
+.. |icon| image:: https://raw.githubusercontent.com/zeroincombenze/l10n-italy/10.0/l10n_it_einvoice_in/static/description/icon.png
 
 |Maturity| |Build Status| |Coverage Status| |Codecov Status| |license gpl| |Tech Doc| |Help| |Try Me|
 
@@ -17,7 +17,7 @@ Overview / Panoramica
 =====================
 
 |en| EInvoice in
------------
+----------------
 
 This module allows to import Electronic Bill XML files version 1.2.1
 
@@ -27,12 +27,10 @@ received through the Exchange System (SdI).
 
 http://www.fatturapa.gov.it/export/fatturazione/en/sdi.htm
 
-|halt| Do not use this module on production environment: it is an aplha release
-subjected to update.
-
 For every supplier, it is possible to set the 'E-bills Detail Level':
 
- - Minimum level: Bill is created with no lines; User will have to create them, according to what specified in the electronic bill 
+ - Minimum level: Bill is created with no lines; User will have to create them, according to what specified in the electronic bill
+ - VAT code level: Line are cumulated by VAT code
  - Maximum level: Every line contained in electronic bill will create a line in bill
 
 Moreover, in supplier form you can set the 'E-bill Default Product': this product will be used, during generation of bills, when no other possible product is found. Tax and account of bill line will be set according to what configured in the product.
@@ -54,7 +52,7 @@ In the incoming electronic bill files list you will see, by default, files to be
 |
 
 |it| Fattura Elettronica in
-----------------------
+---------------------------
 
 Questo modulo consente di importare i file XML della fattura elettronica versione 1.2.1
 
@@ -74,7 +72,7 @@ Il modulo è destinato a tutte le aziende che dal 2019 dovranno emettere fattura
 
 ::
 
-    Normativa:
+    Normativa e prassi:
 
 Le leggi inerenti la fattura elettronica sono numerose. Potete consultare la `normativa fattura elettronica <https://www.fatturapa.gov.it/export/fatturazione/it/normativa/norme.htm>`__
 
@@ -82,6 +80,7 @@ Le leggi inerenti la fattura elettronica sono numerose. Potete consultare la `no
 Per ciascun fornitore è possibile impostare il "Livello dettaglio e-fatture":
 
  - Livello minimo: la fattura fornitore viene creata senza righe, che dovranno essere create dall'utente in base a quanto indicato nella fattura elettronica
+ - Livello codice IVA: le righe sono cumulate per codice IVA
  - Livello massimo: le righe della fattura fornitore verranno generate a partire da tutte quelle presenti nella fattura elettronica
 
 Nella scheda fornitore è inoltre possibile impostare il "Prodotto predefinito per e-fattura": verrà usato, durante la generazione delle fatture fornitore, quando non sono disponibili altri prodotti adeguati. Il conto e l'imposta della riga fattura verranno impostati in base a quelli configurati nel prodotto.
@@ -93,11 +92,68 @@ Magazzino →  Prodotti
 
 |
 
+Features / Caratteristiche
+--------------------------
+
++--------------------------------------------------------+------------+---------------------------------+
+| Descrizione                                            | Stato      | Note                            |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitore, righe con IVA                  | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitore, righe senza IVA                | |check|    | Non riconosce esatto codice IVA |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitori con ritenuta d'acconto          | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitori da agenti (enasarco)            | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitori con controllo su totale fattura | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitori con split-payment               | |no_check| |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da fornitori con reverse charge              | |info|     | Non riconosce esatto codice IVA |
++--------------------------------------------------------+------------+---------------------------------+
+| E-Nota Credito da fornitore                            | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| Gestione multi-aziendale                               | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| Validazione e-fattura per azienda                      | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| Generazione scadenzario passivo da e-fattura           | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| Livello contabile solo testata senza dettagli          | |check|    | Per collegare fatture manuali   |
++--------------------------------------------------------+------------+---------------------------------+
+| Livello righe contabili per aliquote IVA               | |check|    | Per fatture con troppe righe    |
++--------------------------------------------------------+------------+---------------------------------+
+| Livelllo righe contabili in dettaglio                  | |check|    |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da stabile organizzazione estera             | |info|     |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+| e-fattura da rappresentante fiscale                    | |info|     |                                 |
++--------------------------------------------------------+------------+---------------------------------+
+
+
+|
+
+Usage / Utilizzo
+----------------
+
+Se il fornitore specifica un codice noto nell'XML, questo verrà usato dal sistema per recuperare il prodotto corretto da usare nella riga fattura, impostando il conto e l'imposta collegati.
+
+|menu| Contabilità > Acquisti > Fattura elettronica
+
+Caricare un file XML
+Visualizzare il contenuto della fattura facendo clic su "Mostra anteprima"
+Eseguire la procedura guidata "Importa e-fattura" per creare una fattura in bozza oppure "Collega a fattura esistente" per collegare il file XML a una fattura già (automaticamente) creata
+
+
+|
+
 OCA comparation / Confronto con OCA
 -----------------------------------
 
+
 +-----------------------------------------------------------------+-------------------+-----------------------+--------------------------------+
-| Description / Descrizione                                       | Odoo Italia       | OCA                   | Notes / Note                   |
+| Description / Descrizione                                       | Zeroincombenze    | OCA                   | Notes / Note                   |
 +-----------------------------------------------------------------+-------------------+-----------------------+--------------------------------+
 | Coverage / Copertura test                                       |  |Codecov Status| | |OCA Codecov Status|  | |OCA project|                  |
 +-----------------------------------------------------------------+-------------------+-----------------------+--------------------------------+
@@ -136,7 +192,7 @@ Installation / Installazione
 +---------------------------------+------------------------------------------+
 | Suggested deployment is:        | Posizione suggerita per l'installazione: |
 +---------------------------------+------------------------------------------+
-| /opt/odoo/8.0/l10n-italy/                                                  |
+| /opt/odoo/10.0/l10n-italy/                                                 |
 +----------------------------------------------------------------------------+
 
 ::
@@ -146,16 +202,17 @@ Installation / Installazione
     cd ./tools
     ./install_tools.sh -p
     export PATH=$HOME/dev:$PATH
-    odoo_install_repository l10n-italy -b 8.0 -O zero
+    odoo_install_repository l10n-italy -b 10.0 -O zero
     for pkg in os0 z0lib; do
         pip install $pkg -U
     done
-    sudo manage_odoo requirements -b 8.0 -vsy -o /opt/odoo/8.0
+    sudo manage_odoo requirements -b 10.0 -vsy -o /opt/odoo/10.0
 
 From UI: go to:
 
-* |menu| Setting > Modules > Update Modules List
-* |menu| Setting > Local Modules |right_do| Select **l10n_it_einvoice_in** > Install
+* |menu| Setting > Activate Developer mode 
+* |menu| Apps > Update Apps List
+* |menu| Setting > Apps |right_do| Select **l10n_it_einvoice_in** > Install
 
 |
 
@@ -172,14 +229,15 @@ Upgrade / Aggiornamento
 
 ::
 
-    odoo_install_repository l10n-italy -b 8.0 -O zero -U
+    odoo_install_repository l10n-italy -b 10.0 -O zero -U
     # Adjust following statements as per your system
     sudo systemctl restart odoo
 
 From UI: go to:
 
-* |menu| Setting > Modules > Update Modules List
-* |menu| Setting > Local Modules |right_do| Select **l10n_it_einvoice_in** > Update
+* |menu| Setting > Activate Developer mode
+* |menu| Apps > Update Apps List
+* |menu| Setting > Apps |right_do| Select **l10n_it_einvoice_in** > Update
 
 |
 
@@ -214,8 +272,8 @@ An Enhancement Proposal may be submitted if your idea gains ground.
 |
 |
 
-Credits / Titoli di coda
-========================
+Credits / Didascalie
+====================
 
 Copyright
 ---------
@@ -259,9 +317,9 @@ which distributes and promotes ready-to-use **Odoo** on own cloud infrastructure
 `Zeroincombenze® distribution of Odoo <https://wiki.zeroincombenze.org/en/Odoo>`__
 is mainly designed to cover Italian law and markeplace.
 
-|it| **zeroincombenze®** è un marchio registrato di `SHS-AV s.r.l. <https://www.shs-av.com/>`__
-che distribuisce e promuove **Odoo** pronto all'uso sullla propria infrastuttura.
-La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato italiano.
+|it| **zeroincombenze®** è un marchio registrato da `SHS-AV s.r.l. <https://www.shs-av.com/>`__
+che distribuisce e promuove **Odoo** pronto all'uso sulla propria infrastuttura.
+La distribuzione `Zeroincombenze® <https://wiki.zeroincombenze.org/en/Odoo>`__ è progettata per le esigenze del mercato italiano.
 
 
 |chat_with_us|
@@ -269,40 +327,42 @@ La distribuzione `Zeroincombenze® è progettata per le esigenze del mercato ita
 
 |
 
-Last Update / Ultimo aggiornamento: 2019-03-20
+This module is part of l10n-italy project.
 
-.. |Maturity| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
+Last Update / Ultimo aggiornamento: 2019-04-30
+
+.. |Maturity| image:: https://img.shields.io/badge/maturity-Alfa-red.png
     :target: https://odoo-community.org/page/development-status
-    :alt: Beta
-.. |Build Status| image:: https://travis-ci.org/zeroincombenze/l10n-italy.svg?branch=8.0
+    :alt: Alfa
+.. |Build Status| image:: https://travis-ci.org/zeroincombenze/l10n-italy.svg?branch=10.0
     :target: https://travis-ci.org/zeroincombenze/l10n-italy
     :alt: github.com
-.. |license gpl| image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
-    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
-    :alt: License: AGPL-3
+.. |license gpl| image:: https://img.shields.io/badge/licence-LGPL--3-7379c3.svg
+    :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
+    :alt: License: LGPL-3
 .. |license opl| image:: https://img.shields.io/badge/licence-OPL-7379c3.svg
     :target: https://www.odoo.com/documentation/user/9.0/legal/licenses/licenses.html
     :alt: License: OPL
-.. |Coverage Status| image:: https://coveralls.io/repos/github/zeroincombenze/l10n-italy/badge.svg?branch=8.0
-    :target: https://coveralls.io/github/zeroincombenze/l10n-italy?branch=8.0
+.. |Coverage Status| image:: https://coveralls.io/repos/github/zeroincombenze/l10n-italy/badge.svg?branch=10.0
+    :target: https://coveralls.io/github/zeroincombenze/l10n-italy?branch=10.0
     :alt: Coverage
-.. |Codecov Status| image:: https://codecov.io/gh/zeroincombenze/l10n-italy/branch/8.0/graph/badge.svg
-    :target: https://codecov.io/gh/OCA/l10n-italy/branch/8.0
+.. |Codecov Status| image:: https://codecov.io/gh/zeroincombenze/l10n-italy/branch/10.0/graph/badge.svg
+    :target: https://codecov.io/gh/OCA/l10n-italy/branch/10.0
     :alt: Codecov
-.. |OCA project| image:: Unknown badge-OCA
-    :target: https://github.com/OCA/l10n-italy/tree/8.0
+.. |OCA project| image:: https://raw.githubusercontent.com/zeroincombenze/l10n-italy/10.0/l10n_it_einvoice_in/static/description/Unknown badge-OCA
+    :target: https://github.com/OCA/l10n-italy/tree/10.0
     :alt: OCA
-.. |Tech Doc| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-docs-8.svg
-    :target: https://wiki.zeroincombenze.org/en/Odoo/8.0/dev
+.. |Tech Doc| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-docs-10.svg
+    :target: https://wiki.zeroincombenze.org/en/Odoo/10.0/dev
     :alt: Technical Documentation
-.. |Help| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-help-8.svg
-    :target: https://wiki.zeroincombenze.org/it/Odoo/8.0/man
+.. |Help| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-help-10.svg
+    :target: https://wiki.zeroincombenze.org/it/Odoo/10.0/man
     :alt: Technical Documentation
-.. |Try Me| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-try-it-8.svg
-    :target: https://erp8.zeroincombenze.it
+.. |Try Me| image:: https://www.zeroincombenze.it/wp-content/uploads/ci-ct/prd/button-try-it-10.svg
+    :target: https://erp10.zeroincombenze.it
     :alt: Try Me
-.. |OCA Codecov Status| image:: https://codecov.io/gh/OCA/l10n-italy/branch/8.0/graph/badge.svg
-    :target: https://codecov.io/gh/OCA/l10n-italy/branch/8.0
+.. |OCA Codecov Status| image:: https://codecov.io/gh/OCA/l10n-italy/branch/10.0/graph/badge.svg
+    :target: https://codecov.io/gh/OCA/l10n-italy/branch/10.0
     :alt: Codecov
 .. |Odoo Italia Associazione| image:: https://www.odoo-italia.org/images/Immagini/Odoo%20Italia%20-%20126x56.png
    :target: https://odoo-italia.org
