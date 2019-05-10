@@ -31,6 +31,7 @@ class FatturapaFormat(models.Model):
     name = fields.Char('Description', size=128)
     code = fields.Char('Code', size=5)
 
+
 #  used in fatturaPa import
 class FatturapaPaymentData(models.Model):
     # _position = ['2.4.2.2']
@@ -411,6 +412,9 @@ class AccountInvoice(models.Model):
              "terms of Article 73 of Italian Presidential Decree 633/72 (this "
              "enables the seller/provider to issue in the same year several "
              "documents with same number)", copy=False)
+    electronic_invoice_subjected = fields.Boolean(
+        'Subjected to Electronic Invoice',
+        related='partner_id.electronic_invoice_subjected', readonly=True)
 
     @api.model
     def default_get(self, fields):
