@@ -20,7 +20,7 @@
                             <field name="invoices_total"/>
                         </group>
                     </group>
-<!--                    <field name="ftpa_preview_link" widget="url" text="Show preview" class="btn btn-default"/>-->
+                    <field name="ftpa_preview_link" widget="url" text="Show preview" class="btn btn-default"/>
                     <notebook>
                         <page string="Bills">
                             <field name="in_invoice_ids"

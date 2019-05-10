@@ -36,5 +36,10 @@
         'wizard/attachment_refresh_info_view.xml',
         'wizard/link_to_existing_invoice.xml',
     ],
-    "installable": True
+    "installable": True,
+    'external_dependencies': {
+        'python': [
+            'asn1crypto'
+        ]
+    }
 }
