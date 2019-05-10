@@ -2,11 +2,11 @@
 #
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 #
-from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.tools.translate import _
+from openerp import api, fields, models
+from openerp.exceptions import Warning as UserError
+from openerp.tools.translate import _
 
-from odoo.addons.l10n_it_ade.bindings import fatturapa_v_1_2
+from openerp.addons.l10n_it_ade.bindings import fatturapa_v_1_2
 
 
 class WizardLinkToInvoice(models.TransientModel):

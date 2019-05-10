@@ -2,18 +2,24 @@
 #
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 #
-from datetime import datetime, date
+from datetime import datetime
 import base64
 import logging
 
-from odoo import api, fields, models
-from odoo.addons.base_iban.models.res_partner_bank import pretty_iban
-from odoo.addons.l10n_it_ade.bindings import fatturapa_v_1_2
-from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
-from odoo.tools.translate import _
+from openerp import api, fields, models
+# from openerp.addons.base_iban.models.res_partner_bank import pretty_iban
+from openerp.addons.l10n_it_ade.bindings import fatturapa_v_1_2
+from openerp.exceptions import Warning as UserError
+from openerp.tools import float_is_zero
+from openerp.tools.translate import _
 
 _logger = logging.getLogger(__name__)
+
+
+# BP from 10.0
+def pretty_iban(iban):
+    """ return iban in groups of four characters separated by a single space """
+    return ' '.join([iban[i:i + 4] for i in range(0, len(iban), 4)])
 
 
 class WizardImportFatturapa(models.TransientModel):

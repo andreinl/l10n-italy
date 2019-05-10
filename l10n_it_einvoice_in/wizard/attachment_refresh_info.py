@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import base64
-import io
-import zipfile
-from datetime import datetime
-from odoo import models, api, fields, _
-from odoo.exceptions import UserError
+from openerp import models, api, fields, _
 
 
 class WizardAttachmentInRefresh(models.TransientModel):
