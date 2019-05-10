@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
+<openerp>
+<data>
     <record id="wizard_link_supplier_invoice" model="ir.ui.view">
         <field name="name">wizard_link_supplier_invoice</field>
         <field name="model">wizard.link.to.invoice</field>
@@ -31,5 +31,5 @@
         key2="client_action_multi"
         id="action_wizard_link_supplier_invoice"
         view_id="wizard_link_supplier_invoice"/>
-
-</odoo>
+</data>
+</openerp>

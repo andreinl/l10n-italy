@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
+<openerp>
+<data>
     <record id="view_fatturapa_in_attachment_form" model="ir.ui.view">
         <field name="name">fatturapa.attachment.in.form</field>
         <field name="model">fatturapa.attachment.in</field>
@@ -20,7 +20,7 @@
                             <field name="invoices_total"/>
                         </group>
                     </group>
-                    <field name="ftpa_preview_link" widget="url" text="Show preview" class="btn btn-default"/>
+<!--                    <field name="ftpa_preview_link" widget="url" text="Show preview" class="btn btn-default"/>-->
                     <notebook>
                         <page string="Bills">
                             <field name="in_invoice_ids"
@@ -111,7 +111,7 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='payment_term_id']" position="attributes">
+            <xpath expr="//field[@name='payment_term']" position="attributes">
                 <attribute name="attrs">{'invisible': False}</attribute>
             </xpath>
             <field name="partner_id" position="after">
@@ -126,7 +126,7 @@
             <field name="price_unit" position="before">
                 <field name="fatturapa_attachment_in_id" invisible="1"/>
             </field>
-            <field name="analytic_tag_ids" position="after">
+            <field name="account_analytic_id" position="after">
                 <field name="admin_ref"/>
             </field>
             <xpath expr="//notebook" position="inside">
@@ -338,6 +338,6 @@
             </tree>
         </field>
     </record>
-
-</odoo>
+</data>
+</openerp>
 

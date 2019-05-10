@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
+<openerp>
+<data>
         <record id="view_partner_form_fatturapa_in" model="ir.ui.view">
             <field name="name">partner.form.fatturapa.in</field>
             <field name="model">res.partner</field>
@@ -23,5 +23,5 @@
                 </xpath>
             </field>
         </record>
-
-</odoo>
+</data>
+</openerp>
