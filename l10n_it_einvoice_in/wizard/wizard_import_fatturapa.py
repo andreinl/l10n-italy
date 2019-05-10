@@ -44,6 +44,7 @@ class WizardImportFatturapa(models.TransientModel):
     def get_invoice_obj(self, fatturapa_attachment):
         xml_string = fatturapa_attachment.get_xml_string()
         if xml_string:
+            xml_string = self.env['ir.attachment'].sanitize(xml_string)
             return fatturapa_v_1_2.CreateFromDocument(xml_string)
         return False
 
@@ -314,7 +315,7 @@ class WizardImportFatturapa(models.TransientModel):
         where = []
         where.append(('company_id', '=', company_id))
         where.append(('type_tax_use', '=', 'purchase'))
-        where.append(('amount', '=', AliquotaIVA_fp))
+        where.append(('amount', '=', AliquotaIVA_fp / 100))
         if Natura:
             where.append(('nature_id.code', '=', Natura))
         account_taxes = account_tax_model.search(where, order="sequence")
@@ -350,11 +351,10 @@ class WizardImportFatturapa(models.TransientModel):
 
     def _prepare_generic_line_data(self, line):
         retLine = {}
-        company_id = self.env['res.company']._company_default_get(
-            'account.invoice.line').id
+        company_id = self.env['res.company']._company_default_get('account.invoice.line')
         account_tax = self.get_tax(company_id, line.AliquotaIVA, line.Natura)
         if account_tax:
-            retLine['invoice_line_tax_ids'] = [(6, 0, [account_tax])]
+            retLine['invoice_line_tax_id'] = [(6, 0, [account_tax])]
         return retLine
 
     def get_line_product(self, line, partner):
@@ -397,8 +397,8 @@ class WizardImportFatturapa(models.TransientModel):
             new_tax = account.tax_ids[0]
         if new_tax:
             line_tax_id = (
-                line_vals.get('invoice_line_tax_ids') and
-                line_vals['invoice_line_tax_ids'][0][2][0]
+                line_vals.get('invoice_line_tax_id') and
+                line_vals['invoice_line_tax_id'][0][2][0]
             )
             line_tax = self.env['account.tax'].browse(line_tax_id)
             if new_tax.id != line_tax_id:
@@ -410,7 +410,7 @@ class WizardImportFatturapa(models.TransientModel):
                 else:
                     # If product has the same amount of the one in XML,
                     # I use it. Typical case: 22% det 50%
-                    line_vals['invoice_line_tax_ids'] = [
+                    line_vals['invoice_line_tax_id'] = [
                         (6, 0, [new_tax.id])]
 
     def _prepareInvoiceLine(self, credit_account_id, line, wt_found=False):
@@ -721,10 +721,11 @@ class WizardImportFatturapa(models.TransientModel):
                                 'partner_id': partner_id,
                                 'bank_id': bankid,
                                 'bank_name': dline.IstitutoFinanziario,
-                                'bank_bic': dline.BIC
+                                'bank_bic': dline.BIC,
+                                'state': 'bank'
                             }
                         ).id
-                    if payment_banks:
+                    elif payment_banks:
                         payment_bank_id = payment_banks[0].id
 
                 if payment_bank_id:
@@ -740,22 +741,24 @@ class WizardImportFatturapa(models.TransientModel):
             if len(payment_term.line_ids) != len(totdue):
                 continue
             prospect = 100
-            for i,payterm_line in enumerate(payment_term.line_ids):
+            for i, payterm_line in enumerate(payment_term.line_ids):
                 if payterm_line.days:
                     diff = abs(payterm_line.days - totdue[i][2])
-                elif ('months' in payterm_line and payterm_line.months):
+                elif 'months' in payterm_line and payterm_line.months:
                     diff = abs(payterm_line.months * 30 - totdue[i][2])
-                elif ('weeks' in payterm_line and payterm_line.weeks):
+                elif 'weeks' in payterm_line and payterm_line.weeks:
                     diff = abs(payterm_line.weeks * 7 - totdue[i][2])
                 else:
                     diff = 100
-                if (payterm_line.payment_days == totdue[i][0].day):
-                    diff -= payterm_line.payment_days
+
+                if payterm_line.days == totdue[i][0].day:
+                    diff -= payterm_line.days
                     diff = 0 if diff < 0 else diff
-                if (payterm_line.option == 'fix_day_following_month' and
-                        totdue[i][0].day >=30):
-                    diff -= 15
-                    diff = 0 if diff < 0 else diff
+
+                # if payterm_line.option == 'fix_day_following_month' and totdue[i][0].day >= 30:
+                #     diff -= 15
+                #     diff = 0 if diff < 0 else diff
+
                 prospect -= diff
                 prospect = 0 if prospect < 0 else prospect
             if prospect > best_prospect:
@@ -764,13 +767,13 @@ class WizardImportFatturapa(models.TransientModel):
         return payment_term_found, prospect
  
     def set_payment_term(self, invoice, company, PaymentsData):
-        payment_term_model = self.env['account.payment.term']
-        payment_term = invoice.payment_term_id
+        # payment_term_model = self.env['account.payment.term']
+        # payment_term = invoice.payment_term
         ctx = dict(self._context, lang=invoice.partner_id.lang)
         total = invoice.amount_total
         date_invoice = datetime.strptime(invoice.date_invoice, '%Y-%m-%d')
         # Evaluate total due in format [(date,amount),...]
-        totlines = invoice.with_context(ctx).payment_term_id.with_context(
+        totlines = invoice.with_context(ctx).payment_term.with_context(
             currency_id=company.currency_id.id).compute(
                 total, invoice.date_invoice)
         if totlines:
@@ -863,7 +866,7 @@ class WizardImportFatturapa(models.TransientModel):
         vals = {
             'line_number': int(line.NumeroLinea or 0),
             'service_type': line.TipoCessionePrestazione,
-            'name': line.Descrizione,
+            'name': line.Descrizione.strip() or '',
             'qty': float(line.Quantita or 0),
             'uom': line.UnitaMisura,
             'period_start_date': line.DataInizioPeriodo,
@@ -979,14 +982,14 @@ class WizardImportFatturapa(models.TransientModel):
             'reference':
                 FatturaBody.DatiGenerali.DatiGeneraliDocumento.Numero,
             'sender': fatt.FatturaElettronicaHeader.SoggettoEmittente or False,
-            'account_id': partner.property_account_payable_id.id,
+            'account_id': partner.property_account_payable.id,
             'type': invtype,
             'partner_id': partner_id,
             'currency_id': currency[0].id,
             'journal_id': purchase_journal.id,
             # 'origin': xmlData.datiOrdineAcquisto,
-            'fiscal_position_id': partner.property_account_position_id.id,
-            'payment_term_id': partner.property_supplier_payment_term_id.id,
+            'fiscal_position': partner.property_account_position.id,
+            'payment_term': partner.property_supplier_payment_term.id,
             'company_id': company.id,
             'fatturapa_attachment_in_id': fatturapa_attachment.id,
             'comment': comment,
@@ -1037,17 +1040,18 @@ class WizardImportFatturapa(models.TransientModel):
         e_invoice_line_ids = []
         e_invoice_line_ids_2 = {}
 
+        # ('0', 'Minimum'),
+        # ('1', 'Aliquote'),
+        # ('2', 'Maximum'),
         if self.e_invoice_detail_level > '0':
-            if (partner.e_invoice_default_account_id):
+            if partner.e_invoice_default_account_id:
                 credit_account = partner.e_invoice_default_account_id
+            else:
+                credit_account = purchase_journal.default_credit_account_id
 
         for line in FatturaBody.DatiBeniServizi.DettaglioLinee:
-
             if self.e_invoice_detail_level == '2':
-                if (partner.e_invoice_default_account_id):
-                    credit_account_id = partner.e_invoice_default_account_id.id
-                invoice_line_data = self._prepareInvoiceLine(
-                    credit_account_id, line, wt_found)
+                invoice_line_data = self._prepareInvoiceLine(credit_account.id, line, wt_found)
                 product = self.get_line_product(line, partner)
                 if product:
                     invoice_line_data['product_id'] = product.id
@@ -1057,8 +1061,7 @@ class WizardImportFatturapa(models.TransientModel):
                 invoice_lines.append(invoice_line_id)
 
             elif self.e_invoice_detail_level == '1':
-                company_id = self.env['res.company']._company_default_get('account.invoice.line').id
-                account_tax = self.get_tax(company_id, line.AliquotaIVA, line.Natura)
+                account_tax = self.get_tax(company.id, line.AliquotaIVA, line.Natura)
 
                 if account_tax not in e_invoice_line_ids_2:
                     e_invoice_line_ids_2[account_tax] = float(0)
@@ -1068,12 +1071,12 @@ class WizardImportFatturapa(models.TransientModel):
             einvoiceline = self.create_e_invoice_line(line)
             e_invoice_line_ids.append(einvoiceline.id)
 
-        for (account_tax, price) in e_invoice_line_ids_2.items():
+        for account_tax, price in e_invoice_line_ids_2.items():
             invoice_line_data = {
                 "name": credit_account.name,
                 "price_unit": price,
                 "account_id": credit_account.id,
-                "invoice_line_tax_ids": [(6, 0, [account_tax])],
+                "invoice_line_tax_id": [(6, 0, [account_tax])],
                 "quantity": 1
             }
             invoice_line_id = invoice_line_model.create(
@@ -1081,8 +1084,7 @@ class WizardImportFatturapa(models.TransientModel):
             invoice_lines.append(invoice_line_id)
 
         # 2.1.1.7
-        Walfares = FatturaBody.DatiGenerali.\
-            DatiGeneraliDocumento.DatiCassaPrevidenziale
+        Walfares = FatturaBody.DatiGenerali.DatiGeneraliDocumento.DatiCassaPrevidenziale
         if Walfares and self.e_invoice_detail_level == '2':
             for walfareLine in Walfares:
                 invoice_line_data = self._prepareWelfareLine(
@@ -1090,7 +1092,8 @@ class WizardImportFatturapa(models.TransientModel):
                 invoice_line_id = invoice_line_model.create(
                     invoice_line_data).id
                 invoice_lines.append(invoice_line_id)
-        invoice_data['invoice_line_ids'] = [(6, 0, invoice_lines)]
+
+        invoice_data['invoice_line'] = [(6, 0, invoice_lines)]
         invoice_data['e_invoice_line_ids'] = [(6, 0, e_invoice_line_ids)]
         invoice = invoice_model.create(invoice_data)
         if wt_found:
@@ -1310,7 +1313,7 @@ class WizardImportFatturapa(models.TransientModel):
             invoice_id, FatturaBody.DatiGenerali.DatiGeneraliDocumento)
 
         # compute the invoice
-        invoice.compute_taxes()
+        invoice.button_compute(set_total=True)
         return invoice_id
 
     def compute_xml_amount_untaxed(self, DatiRiepilogo):
