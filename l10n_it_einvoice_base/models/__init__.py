@@ -10,3 +10,4 @@
 from . import account
 from . import company
 from . import res_partner
+from . import ir_attachment
