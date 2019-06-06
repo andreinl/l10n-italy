@@ -138,6 +138,7 @@
                         <field name="e_invoice_line_ids" nolabel="1">
                             <tree string="Lines Detail">
                                 <field name="line_number"/>
+                                <field name="code"/>
                                 <field name="name"/>
                                 <field name="qty"/>
                                 <field name="uom"/>
