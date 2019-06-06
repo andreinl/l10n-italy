@@ -163,27 +163,34 @@ class WizardImportFatturapa(models.TransientModel):
         partners = []
         if vat:
             where.append(('vat', '=', vat))
-        if cf:
+        elif cf:
             where.append(('fiscalcode', '=', cf))
         if where:
             partners = partner_model.search(where)
         if not partners and vat:
             where = [('vat', '=', vat)]
             partners = partner_model.search(where)
-        commercial_partner = False
+
+        # commercial_partner = False
         if len(partners) > 1:
-            for partner in partners:
-                if (
-                    commercial_partner and
-                    partner.commercial_partner_id.id != commercial_partner
-                ):
-                    raise UserError(
-                        _("Two distinct partners with "
-                          "VAT number %s and Fiscal Code %s already "
-                          "present in db." %
-                          (vat, cf))
-                    )
-        if partners:
+            # for partner in partners:
+            #     if (
+            #         commercial_partner and
+            #         partner.commercial_partner_id.id != commercial_partner
+            #     ):
+            #         raise UserError(
+            #             _("Two distinct partners with "
+            #               "VAT number %s and Fiscal Code %s already "
+            #               "present in db." %
+            #               (vat, cf))
+            #         )
+            raise UserError(
+                _("More partners with "
+                  "VAT number %s and Fiscal Code %s already "
+                  "present in db." %
+                  (vat, cf))
+            )
+        elif partners:
             commercial_partner_id = partners[0].id
             self.check_partner_base_data(commercial_partner_id, DatiAnagrafici)
             return commercial_partner_id
@@ -214,7 +221,9 @@ class WizardImportFatturapa(models.TransientModel):
             else:
                 vals['name'] = '%s %s' % (DatiAnagrafici.Anagrafica.Cognome,
                                           DatiAnagrafici.Anagrafica.Nome)
-            return partner_model.create(vals).id
+            new_partner = partner_model.create(vals)
+            new_partner.message_post(u'{}: {}'.format("Partner created automatically from XML", 'Info'))
+            return new_partner.id
 
     def getCedPrest(self, cedPrest):
         partner_model = self.env['res.partner']
@@ -379,9 +388,9 @@ class WizardImportFatturapa(models.TransientModel):
         return product
 
     def adjust_accounting_data(self, product, line_vals):
-        if product.product_tmpl_id.property_account_expense_id:
+        if product.product_tmpl_id.property_account_expense:
             line_vals['account_id'] = (
-                product.product_tmpl_id.property_account_expense_id.id)
+                product.product_tmpl_id.property_account_expense.id)
         elif (
             product.product_tmpl_id.categ_id.property_account_expense_categ_id
         ):
