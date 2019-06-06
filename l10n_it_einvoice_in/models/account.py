@@ -84,12 +84,13 @@ class EInvoiceLine(models.Model):
     _name = 'einvoice.line'
     invoice_id = fields.Many2one(
         "account.invoice", "Bill", readonly=True)
-    line_number = fields.Integer('Line Number', readonly=True)
+    line_number = fields.Integer('Line', readonly=True)
     service_type = fields.Char('Sale Provision Type', readonly=True)
     cod_article_ids = fields.One2many(
         'fatturapa.article.code', 'e_invoice_line_id',
         'Articles Code', readonly=True
     )
+    code = fields.Char(compute='get_code')
     name = fields.Char("Description", readonly=True)
     qty = fields.Float(
         "Quantity", readonly=True,
@@ -114,6 +115,11 @@ class EInvoiceLine(models.Model):
     other_data_ids = fields.One2many(
         "einvoice.line.other.data", "e_invoice_line_id",
         string="Other Administrative Data", readonly=True)
+
+    @api.one
+    def get_code(self):
+        codes = [code.code_val for code in self.cod_article_ids]
+        self.code = ', '.join(codes)
 
 
 class EInvoiceLineOtherData(models.Model):
