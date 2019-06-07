@@ -24,15 +24,13 @@ class AccountConfigSettings(models.TransientModel):
         help="Product used to model ScontoMaggiorazione XML element on bills."
     )
 
+    @api.model
     @api.onchange('company_id')
     def onchange_company_id(self):
-        res = super(AccountConfigSettings, self).onchange_company_id()
         if self.company_id:
+            super(AccountConfigSettings, self).onchange_company_id()
             company = self.company_id
             self.sconto_maggiorazione_product_id = (
                 company.sconto_maggiorazione_product_id
                 and company.sconto_maggiorazione_product_id.id or False
             )
-        else:
-            self.sconto_maggiorazione_product_id = False
-        return res
