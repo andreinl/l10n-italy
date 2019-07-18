@@ -76,7 +76,9 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
+                <field name="xml_supplier_id" filter_domain="[('xml_supplier_id.name','ilike',self)]"/>
                 <filter name="to_register" string="To Register" domain="[('registered','=',False)]"/>
+                <filter name="registered" string="Registered" domain="[('registered','!=',False)]"/>
             </search>
         </field>
     </record>

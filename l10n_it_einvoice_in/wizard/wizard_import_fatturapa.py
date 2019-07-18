@@ -566,10 +566,12 @@ class WizardImportFatturapa(models.TransientModel):
     def _computeDiscount(self, DettaglioLinea):
         line_total = float(DettaglioLinea.PrezzoTotale)
         line_unit = line_total / float(DettaglioLinea.Quantita)
-        discount = (
-            1 - (line_unit / float(DettaglioLinea.PrezzoUnitario))
-        ) * 100.0
-        return discount
+        if float(DettaglioLinea.PrezzoUnitario):
+            return (
+                1 - (line_unit / float(DettaglioLinea.PrezzoUnitario))
+            ) * 100.0
+        else:
+            return 0.0
 
     def _addGlobalDiscount(self, invoice_id, DatiGeneraliDocumento):
         discount = 0.0
@@ -742,6 +744,7 @@ class WizardImportFatturapa(models.TransientModel):
         payment_term_model = self.env['account.payment.term']
         payment_term_found = False
         best_prospect = 0
+        prospect = 0
         for payment_term in payment_term_model.search([]):
             if len(payment_term.line_ids) != len(totdue):
                 continue
