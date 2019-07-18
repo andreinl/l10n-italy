@@ -11,7 +11,7 @@
 #
 {
     'name': 'Italian Localization - Fattura elettronica - Ricezione',
-    'version': '8.0.1.3.5ep',
+    'version': '8.0.1.3.5f',
     'category': 'Localization/Italy',
     'summary': 'Ricezione fatture elettroniche',
     'author': 'Agile Business Group, Innoviu, '
@@ -25,6 +25,7 @@
         'l10n_it_einvoice_base',
         'l10n_it_fiscal_ipa',
         'l10n_it_causali_pagamento',
+        'l10n_it_account'
         # 'l10n_it_withholding_tax_causali',
     ],
     "data": [

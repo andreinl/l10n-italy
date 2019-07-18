@@ -159,7 +159,7 @@ class WizardImportFatturapa(models.TransientModel):
                 DatiAnagrafici.IdFiscaleIVA.IdPaese,
                 DatiAnagrafici.IdFiscaleIVA.IdCodice
             )
-        where = []
+        where = [('parent_id', '=', False)]
         partners = []
         if vat:
             where.append(('vat', '=', vat))
@@ -168,7 +168,7 @@ class WizardImportFatturapa(models.TransientModel):
         if where:
             partners = partner_model.search(where)
         if not partners and vat:
-            where = [('vat', '=', vat)]
+            where.append(('vat', '=', vat))
             partners = partner_model.search(where)
 
         # commercial_partner = False
