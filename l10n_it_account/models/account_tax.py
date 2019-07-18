@@ -223,3 +223,13 @@ class AccountTax(models.Model):
             return True
         else:
             return False
+
+    def _get_tax_amount(self):
+        self.ensure_one()
+        res = 0.0
+        if self.amount_type == 'group':
+            for child in self.children_tax_ids:
+                res += child.amount
+        else:
+            res = self.amount
+        return res
