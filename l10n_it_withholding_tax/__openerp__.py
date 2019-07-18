@@ -4,13 +4,18 @@
 
 {
     'name': 'Italian Withholding Tax',
-    'version': '8.0.3.0.0',
+    'version': '8.0.3.0.0a',
     'category': 'Account',
     'author': 'Openforce di Alessandro Camilli, '
               'Odoo Community Association (OCA)',
     'website': 'http://www.openforce.it',
     'license': 'AGPL-3',
-    "depends": ['account', 'account_voucher', 'product'],
+    "depends": [
+        'account',
+        'account_voucher',
+        'product',
+        'l10n_it_causali_pagamento'
+    ],
     "data": [
         'views/account.xml',
         'views/voucher.xml',

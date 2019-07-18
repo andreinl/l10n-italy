@@ -47,6 +47,8 @@ class withholding_tax(models.Model):
     base = fields.Float(string='Base', compute='_get_rate')
     rate_ids = fields.One2many('withholding.tax.rate', 'withholding_tax_id',
                                'Rates', required=True)
+    causale_pagamento_id = fields.Many2one(
+        'causale.pagamento', string="Causale pagamento")
 
     def compute_amount(self, amount_invoice, invoice_id=None):
         invoice_obj = self.env['account.invoice']
