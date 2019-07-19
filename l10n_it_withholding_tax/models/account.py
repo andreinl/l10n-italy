@@ -106,7 +106,7 @@ class account_invoice(models.Model):
     _inherit = "account.invoice"
 
     @api.multi
-    @api.depends('withholding_tax_line')
+    @api.depends('withholding_tax_line.tax')
     def _amount_withholding_tax(self):
         res = {}
         dp_obj = self.env['decimal.precision']
@@ -174,6 +174,41 @@ class account_invoice(models.Model):
         return res
 
     @api.multi
+    def get_wt_taxes_values(self):
+        tax_grouped = {}
+        for invoice in self:
+            for line in invoice.invoice_line:
+                taxes = []
+                for wt_tax in line.invoice_line_tax_wt_ids:
+                    res = wt_tax.compute_tax(line.price_subtotal)
+                    tax = {
+                        'id': wt_tax.id,
+                        'sequence': wt_tax.sequence,
+                        'base': res['base'],
+                        'tax': res['tax'],
+                    }
+                    taxes.append(tax)
+
+                for tax in taxes:
+                    val = {
+                        'invoice_id': invoice.id,
+                        'withholding_tax_id': tax['id'],
+                        'tax': tax['tax'],
+                        'base': tax['base'],
+                        'sequence': tax['sequence'],
+                    }
+
+                    key = self.env['withholding.tax'].browse(
+                        tax['id']).get_grouping_key(val)
+
+                    if key not in tax_grouped:
+                        tax_grouped[key] = val
+                    else:
+                        tax_grouped[key]['tax'] += val['tax']
+                        tax_grouped[key]['base'] += val['base']
+        return tax_grouped
+
+    @api.multi
     def compute_all_withholding_tax(self):
 
         for invoice in self:
@@ -229,6 +264,22 @@ class account_invoice(models.Model):
                     total_withholding_tax_excluded += line.price_subtotal
             return total_withholding_tax_excluded
 
+    @api.onchange('invoice_line_ids')
+    def onchange_invoice_line_wt_ids(self):
+        self.ensure_one()
+        wt_taxes_grouped = self.get_wt_taxes_values()
+        wt_tax_lines = []
+        for tax in wt_taxes_grouped.values():
+            wt_tax_lines.append((0, 0, tax))
+
+        # We should use explicit write() here. At list for Odoo 8.0
+        self.write({'withholding_tax_line': wt_tax_lines})
+
+        if wt_tax_lines:
+            self.withholding_tax = True
+        else:
+            self.withholding_tax = False
+
 
 class account_invoice_withholding_tax(models.Model):
     '''
@@ -238,12 +289,27 @@ class account_invoice_withholding_tax(models.Model):
     _name = 'account.invoice.withholding.tax'
     _description = 'Invoice Withholding Tax Line'
 
-    invoice_id = fields.Many2one('account.invoice', string='Invoice',
-                                 ondelete="cascade")
-    withholding_tax_id = fields.Many2one('withholding.tax',
-                                         string='Withholding tax')
+    @api.depends('base', 'tax', 'invoice_id.amount_untaxed')
+    def _compute_coeff(self):
+        for inv_wt in self:
+            if inv_wt.invoice_id.amount_untaxed:
+                inv_wt.base_coeff = \
+                    inv_wt.base / inv_wt.invoice_id.amount_untaxed
+            if inv_wt.base:
+                inv_wt.tax_coeff = inv_wt.tax / inv_wt.base
+
+    invoice_id = fields.Many2one(
+        'account.invoice', string='Invoice', ondelete="cascade")
+    withholding_tax_id = fields.Many2one(
+        'withholding.tax', string='Withholding tax')
     base = fields.Float('Base')
     tax = fields.Float('Tax')
+    base_coeff = fields.Float(
+        'Base Coeff', compute='_compute_coeff', store=True, help="Coeff used\
+             to compute amount competence in the riconciliation")
+    tax_coeff = fields.Float(
+        'Tax Coeff', compute='_compute_coeff', store=True, help="Coeff used\
+             to compute amount competence in the riconciliation")
 
     @api.multi
     def _align_statement(self):
@@ -301,6 +367,21 @@ class AccountInvoiceLine(models.Model):
 
     _inherit = 'account.invoice.line'
 
+    @api.model
+    def _default_withholding_tax(self):
+        result = []
+        fiscal_position_id = self._context.get('fiscal_position_id', False)
+        if fiscal_position_id:
+            fp = self.env['account.fiscal.position'].browse(fiscal_position_id)
+            wt_ids = fp.withholding_tax_ids.mapped('id')
+            result.append((6, 0, wt_ids))
+        return result
+
+    invoice_line_tax_wt_ids = fields.Many2many(
+        comodel_name='withholding.tax', relation='account_invoice_line_tax_wt',
+        column1='invoice_line_id', column2='withholding_tax_id', string='W.T.',
+        default=_default_withholding_tax,
+    )
     withholding_tax_exclude = fields.Boolean()
 
     @api.multi

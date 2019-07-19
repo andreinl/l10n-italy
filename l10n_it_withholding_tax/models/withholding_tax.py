@@ -34,6 +34,7 @@ class withholding_tax(models.Model):
     name = fields.Char('Name', size=256, required=True)
     certification = fields.Boolean('Certification')
     comment = fields.Text('Text')
+    sequence = fields.Integer('Sequence')
     account_receivable_id = fields.Many2one(
         'account.account',
         'Account Receivable', required=True,
@@ -71,6 +72,14 @@ class withholding_tax(models.Model):
 
         return res
 
+    def get_grouping_key(self, invoice_tax_val):
+        """
+        Returns a string that will be used to group
+        account.invoice.withholding.tax sharing the same properties
+        """
+        self.ensure_one()
+        return str(invoice_tax_val['withholding_tax_id'])
+
     @api.one
     def get_base_from_tax(self, wt_amount):
         '''
@@ -85,6 +94,24 @@ class withholding_tax(models.Model):
             base = round((100 * wt_amount / self.tax) * (1 / self.base),
                          dp_obj.precision_get('Account'))
         return base
+
+    def compute_tax(self, amount):
+        res = {
+            'base': 0,
+            'tax': 0
+        }
+        if self.env.context.get('currency_id'):
+            currency = self.env['res.currency'].browse(
+                self.env.context['currency_id'])
+        else:
+            currency = self.env.user.company_id.currency_id
+
+        prec = self.env['decimal.precision'].precision_get('Currency')
+        base = round(amount * self.base, prec)
+        tax = round(base * ((self.tax or 0.0) / 100.0), prec)
+        res['base'] = base
+        res['tax'] = tax
+        return res
 
 
 class withholding_tax_rate(models.Model):
