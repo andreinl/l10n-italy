@@ -19,6 +19,10 @@ class AccountInvoice(models.Model):
     e_invoice_line_ids = fields.One2many(
         "einvoice.line", "invoice_id", string="Lines Detail",
         readonly=True, copy=False)
+    einvoice_withholding_data_ids = fields.One2many(
+        'account.invoice.withholding.tax', 'invoice_id',
+        string='Withholding Datas', readonly=True, copy=False
+    )
 
     @api.multi
     def name_get(self):

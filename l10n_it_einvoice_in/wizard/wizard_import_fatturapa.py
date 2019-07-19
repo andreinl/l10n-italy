@@ -1020,8 +1020,7 @@ class WizardImportFatturapa(models.TransientModel):
         wt_found = None
         if Withholding:
             wts = self.env['withholding.tax'].search([
-                ('causale_pagamento_id.code', '=',
-                 Withholding.CausalePagamento)
+                ('causale_pagamento_id.code', '=', Withholding.CausalePagamento)
             ])
             if not wts:
                 raise UserError(_(
@@ -1032,11 +1031,12 @@ class WizardImportFatturapa(models.TransientModel):
                 ) % Withholding.CausalePagamento)
             wt_found = False
             for wt in wts:
-                wt_aliquota = wt.tax * wt.base
-                if wt_aliquota == float(Withholding.AliquotaRitenuta):
+                # wt_aliquota = wt.tax * wt.base
+                # if wt_aliquota == float(Withholding.AliquotaRitenuta):
+                if wt.tax == float(Withholding.AliquotaRitenuta):
                     wt_found = wt
                     break
-            if not wt_found:
+            else:
                 raise UserError(_(
                     "No withholding tax found with "
                     "document payment reason %s and rate %s."
@@ -1044,6 +1044,7 @@ class WizardImportFatturapa(models.TransientModel):
                     Withholding.CausalePagamento, Withholding.AliquotaRitenuta
                 ))
             invoice_data['ftpa_withholding_type'] = Withholding.TipoRitenuta
+
         # 2.2.1
         e_invoice_line_ids = []
         e_invoice_line_ids_2 = {}
@@ -1104,9 +1105,11 @@ class WizardImportFatturapa(models.TransientModel):
         invoice_data['invoice_line'] = [(6, 0, invoice_lines)]
         invoice_data['e_invoice_line_ids'] = [(6, 0, e_invoice_line_ids)]
         invoice = invoice_model.create(invoice_data)
+
         if wt_found:
-            invoice._onchange_invoice_line_wt_ids()
+            invoice.onchange_invoice_line_wt_ids()
             invoice._amount_withholding_tax()
+
         invoice.write(invoice._convert_to_write(invoice._cache))
         invoice_id = invoice.id
 
@@ -1320,8 +1323,19 @@ class WizardImportFatturapa(models.TransientModel):
         self._addGlobalDiscount(
             invoice_id, FatturaBody.DatiGenerali.DatiGeneraliDocumento)
 
+        if wt_found:
+            # Disconnect withholding tax from invoice.
+            # If it remains connected it will be deleted by button_compute
+            withholding_tax_ids = invoice.withholding_tax_line.ids
+            self.env['account.invoice.withholding.tax'].browse(withholding_tax_ids).write({'invoice_id': False})
+
         # compute the invoice
         invoice.button_compute(set_total=True)
+
+        if wt_found:
+            # Riconnect withholding tax
+            self.env['account.invoice.withholding.tax'].browse(withholding_tax_ids).write({'invoice_id': invoice_id})
+
         return invoice_id
 
     def compute_xml_amount_untaxed(self, DatiRiepilogo):

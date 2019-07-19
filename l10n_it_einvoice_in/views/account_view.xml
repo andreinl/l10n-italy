@@ -194,6 +194,13 @@
                             </tree>
                         </field>
                     </group>
+                    <group string="Withholding Data" colspan="2" col="2" groups="account.group_account_invoice" attrs="{'invisible':[('einvoice_withholding_data_ids', '=', False)]}">
+                        <field name="einvoice_withholding_data_ids" nolabel="1" readonly="1">
+                            <tree editable="bottom" string="Withholding Data">
+                                <field name="withholding_tax_id"/>
+                            </tree>
+                        </field>
+                    </group>
                     <group string="Payments">
                         <field name="fatturapa_payments" nolabel="1" readonly="1">
                             <tree string="Payments">
