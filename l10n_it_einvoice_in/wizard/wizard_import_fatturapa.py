@@ -817,21 +817,24 @@ class WizardImportFatturapa(models.TransientModel):
                         totlines[i][1] != totdue[i][1]):
                     valid_due = False
                     break
-        payment_term_found = False
+
         if not valid_due:
             payment_term_found, prospect = self.match_best_of_payterms(totdue)
             if payment_term_found and prospect > 95:
                 invoice.write({
                     'payment_term_id': payment_term_found.id,
-                    'date_due': totdue[-1][0]})
+                    'date_due': totdue and totdue[-1][0] or False
+                })
             elif len(totdue) == 1:
                 invoice.write({
                     'payment_term_id': False,
-                    'date_due': totdue[0][0]})
+                    'date_due': totdue[0][0]
+                })
             elif payment_term_found and prospect > 80:
                 invoice.write({
                     'payment_term_id': payment_term_found.id,
-                    'date_due': totdue[-1][0]})
+                    'date_due': totdue and totdue[-1][0] or False
+                })
             else:
                 self.log_inconsistency(
                     _('None of payment terms matches due invoice!')
