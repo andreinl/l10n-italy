@@ -255,3 +255,22 @@ class FatturaPAAttachmentIn(models.Model):
                     att.in_invoice_ids[0],
                     att.in_invoice_ids[0].company_id,
                     fattura.DatiPagamento)
+
+    def extract_attachments(self, AttachmentsData, invoice_id):
+        AttachModel = self.env['fatturapa.attachments']
+        for attach in AttachmentsData:
+            if not attach.NomeAttachment:
+                name = _("Attachment without name")
+            else:
+                name = attach.NomeAttachment
+            content = attach.Attachment
+            _attach_dict = {
+                'name': name,
+                'datas': base64.b64encode(content),
+                'datas_fname': name,
+                'description': attach.DescrizioneAttachment or '',
+                'compression': attach.AlgoritmoCompressione or '',
+                'format': attach.FormatoAttachment or '',
+                'invoice_id': invoice_id,
+            }
+            AttachModel.create(_attach_dict)
