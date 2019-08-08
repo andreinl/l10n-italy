@@ -56,6 +56,10 @@
                             <label for="einvoice_email"/>
                             <field name="einvoice_email" class="oe_inline"/>
                         </div>
+                        <div>
+                            <label for="style_sheet_mode"/>
+                            <field name="style_sheet_mode" class="oe_inline"/>
+                        </div>
                     </div>
                 </group>
             </xpath>

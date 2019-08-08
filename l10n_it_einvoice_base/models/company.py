@@ -24,6 +24,10 @@ from openerp.osv import fields, orm
 class ResCompany(orm.Model):
     _inherit = 'res.company'
     _columns = {
+        'style_sheet_mode': fields.selection([
+            ('standard', 'Standard'),
+            ('asso_software', 'Asso Software'),
+        ], string="Style Sheet Mode"),
         'fatturapa_fiscal_position_id': fields.many2one(
             'fatturapa.fiscal_position', 'Fiscal Position',
             help="Fiscal position used by FatturaPA",
@@ -172,6 +176,17 @@ class AccountConfigSettings(orm.TransientModel):
             type='char',
             string='E-Invoice email',
             help="Alternative E-Invoice email, if not set company email is used"
+        ),
+        'style_sheet_mode': fields.related(
+            'company_id', 'style_sheet_mode',
+            type='selection',
+            selection=[
+                ('standard', 'Standard'),
+                ('asso_software', 'Asso Software'),
+            ],
+            string="Style Sheet Mode",
+            help="Style Sheet to use for XML invoice preview",
+            default='asso_software'
         )
     }
 
