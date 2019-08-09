@@ -123,6 +123,16 @@ class FatturaPAAttachmentIn(models.Model):
                 # self.cache_get_attachment_fields[attachment.id] = res[attachment.id].copy()
         return
 
+    @api.multi
+    def _get_related_products(self):
+        for xml_attachment in self:
+            xml_attachment.xml_supplier_related_products = xml_attachment.xml_supplier_id.e_invoice_default_product_id and 1 or 0
+            xml_attachment.xml_supplier_related_products += xml_attachment.env['product.supplierinfo'].search([
+                ('name', '=', xml_attachment.xml_supplier_id.id)
+            ], count=True)
+
+        return
+
     ir_attachment_id = fields.Many2one(
         'ir.attachment', 'Attachment', required=True, ondelete="cascade")
     in_invoice_ids = fields.One2many(
@@ -131,6 +141,10 @@ class FatturaPAAttachmentIn(models.Model):
     xml_supplier_id = fields.Many2one(
         "res.partner", string="Supplier", compute="_compute_xml_data",
         store=True)
+    xml_supplier_default_product_id = fields.Many2one(related="xml_supplier_id.e_invoice_default_product_id")
+
+    xml_supplier_related_products = fields.Integer(compute=_get_related_products, string="Supplier products")
+
     invoices_number = fields.Integer(
         "Bills Number", compute="_compute_xml_data", store=True)
     invoices_total = fields.Float(
