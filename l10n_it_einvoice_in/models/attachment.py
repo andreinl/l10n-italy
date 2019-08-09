@@ -52,13 +52,13 @@ class FatturaPAAttachmentIn(models.Model):
 
     @api.multi
     def _get_attachment_fields(self):
-        for attachment in self:
+        for attachment in self.with_context({'bin_size': False}):
             # if att.id in self.cache_get_attachment_fields:
             #     res[att.id] = self.cache_get_attachment_fields[att.id]
             #     continue
 
-            attachment.xml_attachment_datas = False
-            attachment.xml_attachment_filename = ''
+            # attachment.xml_attachment_datas = False
+            # attachment.xml_attachment_filename = ''
 
             if attachment.xml_have_attachment:
                 supplier_id = attachment.xml_supplier_id and attachment.xml_supplier_id.id or False
@@ -71,12 +71,12 @@ class FatturaPAAttachmentIn(models.Model):
                     # attachment.xml_attachment_datas = False,
                     attachment.xml_attachment_filename = u"{}.zip".format(name)
 
-                in_memory_zip = StringIO()
+                in_memory_zip = BytesIO()
                 zf = zipfile.ZipFile(in_memory_zip, "w", zipfile.ZIP_STORED, False)
                 zf.debug = 3
 
                 try:
-                    fatt = self.env.get('wizard.import.fatturapa').get_invoice_obj(attachment)
+                    fatt = self.env['wizard.import.fatturapa'].get_invoice_obj(attachment)
                 except Exception as e:
                     continue
 
@@ -115,65 +115,13 @@ class FatturaPAAttachmentIn(models.Model):
                     out = in_memory_zip.getvalue()
                     out.encode("base64")
                     attachment.xml_attachment_datas = out
+
+                    # attachment.write({
+                    #     'xml_attachment_datas': out,
+                    #     'xml_attachment_filename': attachment.xml_attachment_filename
+                    # })
                 # self.cache_get_attachment_fields[attachment.id] = res[attachment.id].copy()
         return
-
-    @api.multi
-    def _compute_xml_data(self):
-        for att in self:
-            # if att.id in self.cache_compute_xml_data:
-            #     ret[att.id] = self.cache_compute_xml_data[att.id]
-            #
-            #     continue
-
-            # DDT_number = []
-            # supplier_invoice_numbers = []
-            # supplier_invoice_dates = []
-            # partner_id = False
-            # invoices_total = 0
-            # xml_invoice_type = 'TD01'
-            # invoices_number = 0
-            xml_have_attachment = False
-            # xml_errors = ''
-            try:
-                fatt = self.env.get('wizard.import.fatturapa').get_invoice_obj(att)
-                # cedentePrestatore = fatt.FatturaElettronicaHeader.CedentePrestatore
-                # partner_id = self.pool.get('wizard.import.fatturapa').getCedPrest(cedentePrestatore)
-                # invoices_number = len(fatt.FatturaElettronicaBody)
-                for invoice_body in fatt.FatturaElettronicaBody:
-                    # docType = invoice_body.DatiGenerali.DatiGeneraliDocumento.TipoDocumento
-                    # supplier_invoice_numbers.append(invoice_body.DatiGenerali.DatiGeneraliDocumento.Numero)
-                    # if invoice_body.DatiGenerali.DatiGeneraliDocumento.Data:
-                    #     data = datetime.strptime(str(invoice_body.DatiGenerali.DatiGeneraliDocumento.Data)[0:10], DEFAULT_SERVER_DATE_FORMAT)
-                    #     supplier_invoice_dates.append(data.strftime("%d/%m/%Y"))
-                    # invoices_total += float(
-                    #     invoice_body.DatiGenerali.DatiGeneraliDocumento.ImportoTotaleDocumento or 0
-                    # )
-                    # for DDT in invoice_body.DatiGenerali.DatiDDT:
-                    #     DDT_number.append(DDT.NumeroDDT)
-                    xml_have_attachment = invoice_body.Allegati
-
-                # try:
-                #     xml_invoice_type = str(docType)
-                # except Exception as e:
-                #     _logger.error(e)
-                #     xml_errors = str(e)
-
-            except Exception as e:
-                _logger.error(e)
-                # xml_errors = str(e)
-
-                # att.xml_invoice_type': xml_invoice_type,
-                # att.xml_supplier_id': partner_id,
-                # att.invoices_number': invoices_number,
-                # att.invoices_total': invoices_total,
-                # att.ddt_number': ','.join(list(set(DDT_number))),
-                # att.supplier_invoice_numbers': ','.join(list(set(supplier_invoice_numbers))),
-                # att.invoices_date': ','.join(list(set(supplier_invoice_dates))),
-                att.xml_have_attachment = xml_have_attachment
-                # att.xml_errors': xml_errors
-
-            # self.cache_compute_xml_data[att.id] = vals
 
     ir_attachment_id = fields.Many2one(
         'ir.attachment', 'Attachment', required=True, ondelete="cascade")
@@ -197,10 +145,13 @@ class FatturaPAAttachmentIn(models.Model):
         'Date Invoice', store=True,
         compute='_compute_xml_data')
 
+    supplier_invoice_numbers = fields.Char(
+        compute="_compute_xml_data", string="Invoices number", size=2048, store=True)
+
     xml_preview = fields.Text(compute=_get_fattura_elettronica_preview, string="Preview")
     xml_attachment_datas = fields.Binary(compute=_get_attachment_fields, string="XML File")
     xml_attachment_filename = fields.Char(compute=_get_attachment_fields, string="XML File Name")
-    xml_have_attachment = fields.Boolean(compute=_compute_xml_data, string="Have Attachment", store=True)
+    xml_have_attachment = fields.Boolean(compute="_compute_xml_data", string="Have Attachment", store=True)
 
     @api.onchange('datas_fname')
     def onchange_datas_fname(self):
@@ -220,27 +171,42 @@ class FatturaPAAttachmentIn(models.Model):
     def _compute_xml_data(self):
         wizard_model = self.env['wizard.import.fatturapa']
         for att in self:
-            fatt = wizard_model.get_invoice_obj(att)
-            if not fatt:
-                continue
-            cedentePrestatore = fatt.FatturaElettronicaHeader.CedentePrestatore
-            partner_id = wizard_model.getCedPrest(cedentePrestatore)
-            att.xml_supplier_id = partner_id
-            att.invoices_number = len(fatt.FatturaElettronicaBody)
-            att.registered = False
-            if att.in_invoice_ids:
-                att.date_invoice0 = att.in_invoice_ids[0].date_invoice
-                if len(att.in_invoice_ids) == att.invoices_number:
-                    att.registered = True
-            att.invoices_total = 0
-            for invoice_body in fatt.FatturaElettronicaBody:
-                att.invoices_total += float(
-                    invoice_body.DatiGenerali.DatiGeneraliDocumento.
-                    ImportoTotaleDocumento or 0
-                )
-                if not att.in_invoice_ids:
-                    att.date_invoice0 = invoice_body.\
-                        DatiGenerali.DatiGeneraliDocumento.Data
+            supplier_invoice_numbers = []
+            # supplier_invoice_dates = []
+            xml_have_attachment = False
+
+            try:
+                fatt = wizard_model.get_invoice_obj(att)
+                if not fatt:
+                    continue
+
+                cedentePrestatore = fatt.FatturaElettronicaHeader.CedentePrestatore
+                partner_id = wizard_model.getCedPrest(cedentePrestatore)
+                att.xml_supplier_id = partner_id
+                att.invoices_number = len(fatt.FatturaElettronicaBody)
+                att.registered = False
+                if att.in_invoice_ids:
+                    att.date_invoice0 = att.in_invoice_ids[0].date_invoice
+                    if len(att.in_invoice_ids) == att.invoices_number:
+                        att.registered = True
+                att.invoices_total = 0
+                for invoice_body in fatt.FatturaElettronicaBody:
+                    att.invoices_total += float(
+                        invoice_body.DatiGenerali.DatiGeneraliDocumento.
+                        ImportoTotaleDocumento or 0
+                    )
+                    supplier_invoice_numbers.append(invoice_body.DatiGenerali.DatiGeneraliDocumento.Numero)
+
+                    if not att.in_invoice_ids:
+                        att.date_invoice0 = invoice_body.\
+                            DatiGenerali.DatiGeneraliDocumento.Data
+
+                    xml_have_attachment = invoice_body.Allegati
+            except Exception as e:
+                _logger.error(e)
+
+            att.supplier_invoice_numbers = ','.join(list(set(supplier_invoice_numbers)))
+            att.xml_have_attachment = xml_have_attachment
 
     @api.multi
     @api.depends('ir_attachment_id.datas', 'in_invoice_ids')

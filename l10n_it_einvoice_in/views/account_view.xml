@@ -12,6 +12,7 @@
                             <field name="datas" filename="datas_fname" />
                             <field name="datas_fname" invisible="1"/>
                             <field name="name" invisible="1"/>
+                            <field name="supplier_invoice_numbers" />
                         </group>
                         <group>
                             <field name="xml_supplier_id"/>
@@ -70,6 +71,7 @@
                 <field name="name"/>
                 <field name="create_date"/>
                 <field name="xml_supplier_id"/>
+                <field name="supplier_invoice_numbers" />
                 <field name="date_invoice0"/>
                 <field name="invoices_total"/>
                 <field name="invoices_number"/>

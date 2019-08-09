@@ -379,6 +379,16 @@ class WizardImportFatturapa(models.TransientModel):
                 templates = supplier_infos.mapped('product_tmpl_id')
                 if len(templates) == 1:
                     product = templates.product_variant_ids[0]
+        else:
+            supplier_infos = supplier_info.search([
+                ('product_name', 'ilike', line.Descrizione),
+                ('name', '=', partner.id)
+            ])
+            if supplier_infos:
+                templates = supplier_infos.mapped('product_tmpl_id')
+                if len(templates) == 1:
+                    product = templates.product_variant_ids[0]
+
         if not product and partner.e_invoice_default_product_id:
             product = partner.e_invoice_default_product_id
         return product
