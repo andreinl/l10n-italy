@@ -28,8 +28,10 @@ class FatturaPAAttachmentIn(models.Model):
 
     @api.multi
     def _get_fattura_elettronica_preview(self):
-        user = self.env['res.users'].browse(self.env.uid)
-        style_sheet_mode = user.company_id.style_sheet_mode
+        # config = self.env['account.config.settings'].browse(1)
+
+        # style_sheet_mode = self.user_id.company_id.style_sheet_mode
+        style_sheet_mode = False
 
         if not style_sheet_mode or style_sheet_mode == 'asso_software':
             xsl_path = get_module_resource('l10n_it_einvoice_base', 'data', 'FoglioStileAssoSoftware.xsl')
@@ -124,12 +126,18 @@ class FatturaPAAttachmentIn(models.Model):
         return
 
     @api.multi
-    def _get_related_products(self):
+    @api.depends('xml_supplier_id')
+    def _count_related_products(self):
         for xml_attachment in self:
-            xml_attachment.xml_supplier_related_products = xml_attachment.xml_supplier_id.e_invoice_default_product_id and 1 or 0
-            xml_attachment.xml_supplier_related_products += xml_attachment.env['product.supplierinfo'].search([
-                ('name', '=', xml_attachment.xml_supplier_id.id)
-            ], count=True)
+            if xml_attachment.xml_supplier_id:
+                if xml_attachment.xml_supplier_id.e_invoice_default_product_id:
+                    xml_attachment.xml_supplier_related_products = 1
+                else:
+                    xml_attachment.xml_supplier_related_products = 0
+                xml_attachment.xml_supplier_related_products += self.env['product.supplierinfo'].search([
+                    ('name', '=', xml_attachment.xml_supplier_id.id)
+                ], count=True)
+                xml_attachment.xml_supplier_default_product_id = xml_attachment.xml_supplier_id.e_invoice_default_product_id.id
 
         return
 
@@ -141,9 +149,15 @@ class FatturaPAAttachmentIn(models.Model):
     xml_supplier_id = fields.Many2one(
         "res.partner", string="Supplier", compute="_compute_xml_data",
         store=True)
-    xml_supplier_default_product_id = fields.Many2one(related="xml_supplier_id.e_invoice_default_product_id")
+    # xml_supplier_default_product_id = fields.Many2one(
+    #     related="xml_supplier_id.e_invoice_default_product_id", string="Default product", store=True)
+    # xml_supplier_default_product_id = fields.Many2one(
+    #     "product.product", compute="_compute_xml_data", string="Default product")
+    xml_supplier_default_product_id = fields.Many2one(
+        "product.product", compute=_count_related_products, string="Default product")
 
-    xml_supplier_related_products = fields.Integer(compute=_get_related_products, string="Supplier products")
+    # xml_supplier_related_products = fields.Integer(compute="_compute_xml_data", string="Supplier products")
+    xml_supplier_related_products = fields.Integer(compute=_count_related_products, string="Supplier products")
 
     invoices_number = fields.Integer(
         "Bills Number", compute="_compute_xml_data", store=True)
@@ -184,7 +198,7 @@ class FatturaPAAttachmentIn(models.Model):
     @api.depends('ir_attachment_id.datas', 'in_invoice_ids')
     def _compute_xml_data(self):
         wizard_model = self.env['wizard.import.fatturapa']
-        for att in self:
+        for att in self.with_context({'bin_size': False}):
             supplier_invoice_numbers = []
             # supplier_invoice_dates = []
             xml_have_attachment = False
@@ -197,6 +211,7 @@ class FatturaPAAttachmentIn(models.Model):
                 cedentePrestatore = fatt.FatturaElettronicaHeader.CedentePrestatore
                 partner_id = wizard_model.getCedPrest(cedentePrestatore)
                 att.xml_supplier_id = partner_id
+
                 att.invoices_number = len(fatt.FatturaElettronicaBody)
                 att.registered = False
                 if att.in_invoice_ids:
