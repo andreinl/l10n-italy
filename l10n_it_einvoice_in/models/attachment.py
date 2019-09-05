@@ -198,7 +198,17 @@ class FatturaPAAttachmentIn(models.Model):
     @api.depends('ir_attachment_id.datas', 'in_invoice_ids')
     def _compute_xml_data(self):
         wizard_model = self.env['wizard.import.fatturapa']
-        for att in self.with_context({'bin_size': False}):
+
+        # Problem with cache system for new API https://github.com/odoo/odoo/issues/6276
+        if self._context.get('bin_size'):
+            context = self._context.copy()
+            context['bin_size'] = False
+            attachments = self.with_context(context)
+        else:
+            attachments = self
+
+        # for att in self.with_context({'bin_size': False}):
+        for att in attachments:
             supplier_invoice_numbers = []
             # supplier_invoice_dates = []
             xml_have_attachment = False
